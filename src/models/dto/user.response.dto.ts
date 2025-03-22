@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength, Min, Max, IsEnum } from "class-validator";
+import { IsEmail, IsString, Min, Max, IsEnum } from "class-validator";
 import Role from "../enums/role";
 
 class UserResponseDTO {

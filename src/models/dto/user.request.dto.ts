@@ -1,5 +1,6 @@
 import { IsEmail, IsString, MinLength, Min, Max, IsEnum } from "class-validator";
 import Role from "../enums/role";
+import Password from "../password";
 
 class UserRequestDTO {
   @IsEmail()
@@ -16,7 +17,7 @@ class UserRequestDTO {
   rating!: number;
 
   @MinLength(8)
-  password!: string;
+  password!: Password;
 
   @IsEnum(Role)
   role!: Role;

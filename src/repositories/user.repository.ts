@@ -2,22 +2,20 @@ import Repository from "../config/repository";
 import User from "../models/user";
 import mongoose from "mongoose";
 import UserDatabaseSchema from "../schemas/database/user.database.schema";
-import UserResponseDTO from "../models/dto/user.response.dto";
-import UserRequestDTO from "../models/dto/user.request.dto";
 
-class UserRepository implements Repository<UserRequestDTO, UserResponseDTO> {
+class UserRepository implements Repository<User> {
   private readonly userModel;
   
   constructor() {
     this.userModel = mongoose.model<User>("User", UserDatabaseSchema); 
   }
 
-  async getAll(): Promise<UserResponseDTO[]> {
+  async getAll(): Promise<User[]> {
     const users = await this.userModel.find();
     return users.map((user) => user.toObject());
   }
   
-  async get(id: String): Promise<UserResponseDTO> {
+  async get(id: String): Promise<User> {
     const user = await this.userModel.findById(id);
     if(!user) {
       throw new Error("User not found !");
@@ -25,7 +23,7 @@ class UserRepository implements Repository<UserRequestDTO, UserResponseDTO> {
     return user?.toObject();
   }
   
-  async getByEmail(email: String): Promise<UserResponseDTO> {
+  async getByEmail(email: String): Promise<User> {
     const user = await this.userModel.findOne({ email });
     if(!user) {
       throw new Error("User not found !");
@@ -33,12 +31,12 @@ class UserRepository implements Repository<UserRequestDTO, UserResponseDTO> {
     return user.toObject();
   }
   
-  async add(userToAdd: UserRequestDTO): Promise<UserResponseDTO> {
+  async add(userToAdd: User): Promise<User> {
     const user = await new this.userModel(userToAdd).save();
     return user.toObject();
   }
   
-  async put(id: String, newUser: UserRequestDTO): Promise<UserResponseDTO> {
+  async put(id: String, newUser: User): Promise<User> {
     const user = await this.userModel.findByIdAndUpdate(id, newUser, {new: true});
     if(!user) {
       throw new Error("User not found !");

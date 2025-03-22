@@ -1,8 +1,8 @@
-interface Repository<T, S> {
-  getAll: () => Promise<S[]>;
-  get: (id: string) => Promise<S>;
-  add: (item: T) => Promise<S>;
-  put: (id: string, item: T) => Promise<S>;
+interface Repository<T> {
+  getAll: () => Promise<T[]>;
+  get: (id: string) => Promise<T>;
+  add: (item: T) => Promise<T>;
+  put: (id: string, item: T) => Promise<T>;
   delete: (id: string) => Promise<void>;
 }
 

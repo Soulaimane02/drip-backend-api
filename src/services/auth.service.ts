@@ -21,7 +21,7 @@ class AuthService {
     this.userMapper = new UserMapper();
   }
 
-  async register(userDto: UserRequestDTO): Promise<string> {
+  async register(userDto: UserRequestDTO, password: string): Promise<string> {
     const existingUser = await this.userRepository.getByEmail(userDto.email);
     if(existingUser) {
       throw new Error("Email already exists");
@@ -30,8 +30,13 @@ class AuthService {
     const user = this.userMapper.toEntity(userDto);
 
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    const hashedPassword = await bcrypt.hash(user.password.hash, salt);
-    user.password.hash = hashedPassword;
+    const hashedPassword = await bcrypt.hash(password, salt);
+    
+    user.password = {
+      hash: hashedPassword,
+      salt: salt
+    };
+
     user.role = user.role || Role.User;
     
     const userAdded = await this.userRepository.add(user);

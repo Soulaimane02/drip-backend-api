@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
 import { middleware } from "./config/middlewares";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 const IP_ADRESS = process.env.IP_ADRESS as string;
@@ -16,5 +17,7 @@ app.use(cors({
 
 middleware(app);
 connectDB();
+
+app.use("/auth", authRoutes);
 
 export default app;

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Role from "../../models/enums/role";
+import PasswordDatabaseSchema from "./password.database.schema";
 
 const UserDatabaseSchema = new mongoose.Schema({
   email: {
@@ -24,7 +25,7 @@ const UserDatabaseSchema = new mongoose.Schema({
     required: true
   },
   password: {
-    type: String,
+    type: PasswordDatabaseSchema,
     required: true
   },
   role: {

@@ -23,12 +23,9 @@ class UserRepository implements Repository<User> {
     return user?.toObject();
   }
   
-  async getByEmail(email: String): Promise<User> {
+  async getByEmail(email: String): Promise<User | null> {
     const user = await this.userModel.findOne({ email });
-    if(!user) {
-      throw new Error("User not found !");
-    }
-    return user.toObject();
+    return user?.toObject() ?? null;
   }
   
   async add(userToAdd: User): Promise<User> {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AuthService from "../services/auth.service";
 import UserRequestSchema from "../schemas/request/user.request.schema";
-import UserRequestDTO from "../models/dto/user.request.dto";
+import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 
 class AuthController {
   private readonly authService: AuthService;
@@ -26,19 +26,30 @@ class AuthController {
       if(err.message === "Email already exists") {
         return res.status(409).json({ error: "Email already exists" });
       }
-      console.log(err);
       return res.status(500).json({ error: "Internal server error" });
     }
   }
 
-  /*async login(req: Request, res: Response) {
+  async login(req: Request, res: Response) {
     try {
+      const { email, password } = req.body;
+      if(!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
+      }
 
+      const token = await this.authService.login(email, password);
+      return res.status(200).json({ token });
     }
     catch(err: any) {
-
+      if(err.message === "User not found") {
+        return res.status(401).json({ error: "Invalid email" });
+      }
+      else if(err.message === "Invalid password") {
+        return res.status(401).json({ error: "Invalid password" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
     }
-  }*/
+  }
 }
 
 export default AuthController;

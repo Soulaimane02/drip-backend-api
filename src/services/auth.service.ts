@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import UserRepository from "../repositories/user.repository";
-import UserRequestDTO from "../models/dto/user.request.dto";
-import UserResponseDTO from "../models/dto/user.response.dto";
+import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
+import UserResponseDTO from "../models/entities/user/dto/user.response.dto";
 import Role from "../models/enums/role";
 import UserMapper from "../mappers/user.mapper";
 
@@ -31,7 +31,7 @@ class AuthService {
 
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(password, salt);
-    
+
     user.password = {
       hash: hashedPassword,
       salt: salt

@@ -1,5 +1,5 @@
 import joi from "joi";
-import User from "../../models/user";
+import User from "../../models/entities/user/user";
 import Role from "../../models/enums/role";
 
 const UserRequestSchema = joi.object<User>({

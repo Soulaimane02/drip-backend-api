@@ -1,5 +1,5 @@
-import Role from "../enums/role";
-import Password from "../password";
+import Role from "../../../enums/role";
+import Password from "../../password/password";
 
 interface UserRequestDTO {
   email: string;

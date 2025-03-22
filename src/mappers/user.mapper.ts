@@ -1,7 +1,7 @@
 import Mapper from "../config/mapper";
-import User from "../models/user";
-import UserRequestDTO from "../models/dto/user.request.dto";
-import UserResponseDTO from "../models/dto/user.response.dto";
+import User from "../models/entities/user/user";
+import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
+import UserResponseDTO from "../models/entities/user/dto/user.response.dto";
 
 class UserMapper implements Mapper<User, UserRequestDTO, UserResponseDTO> {
   toEntity(dto: UserRequestDTO): User {

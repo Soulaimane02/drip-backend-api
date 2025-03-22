@@ -24,6 +24,7 @@
     "@types/cors": "^2.8.17",
     "@types/joi": "^17.2.3",
     "@types/mongoose": "^5.11.97",
+    "class-validator": "^0.14.1",
     "cors": "^2.8.5",
     "joi": "^17.13.3",
     "mongoose": "^8.12.2"

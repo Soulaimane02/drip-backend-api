@@ -1,5 +1,5 @@
 import Password from "./password";
-import Role from "./role";
+import Role from "./enums/role";
 
 interface User {
   id: string;

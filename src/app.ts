@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/database";
 import { middleware } from "./config/middlewares";
 import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
 
 dotenv.config();
 const IP_ADRESS = process.env.IP_ADRESS as string;
@@ -19,5 +20,6 @@ middleware(app);
 connectDB();
 
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 export default app;

@@ -1,6 +1,7 @@
 import Role from "../../../enums/role";
 
 interface UserResponseDTO {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;

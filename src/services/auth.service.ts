@@ -13,8 +13,8 @@ const SECRET_KEY = process.env.SECRET_KEY as string;
 const SALT_ROUNDS = 10;
 
 class AuthService {
-  private userRepository: UserRepository;
-  private userMapper: UserMapper;
+  private readonly userRepository: UserRepository;
+  private readonly userMapper: UserMapper;
 
   constructor() {
     this.userRepository = new UserRepository();

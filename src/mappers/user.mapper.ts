@@ -32,6 +32,7 @@ class UserMapper implements Mapper<User, UserRequestDTO, UserResponseDTO> {
 
   toResponseDTO(entity: User): UserResponseDTO {
     return {
+      id: entity.id,
       email: entity.email,
       firstName: entity.firstName,
       lastName: entity.lastName,

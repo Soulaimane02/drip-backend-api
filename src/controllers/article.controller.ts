@@ -52,6 +52,29 @@ class ArticleController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  async updateArticle(req: Request, res: Response) {
+    try {
+      const { error, value } = ArticleRequestSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const id = req.params.id;
+      const articleDto: ArticleRequestDTO = value;
+      const updatedArticle = await this.articleService.updateArticle(id, articleDto);
+      return res.status(201).json(updatedArticle);
+    }
+    catch(err: any) {
+      if(err.message === "Article not found !") {
+        return res.status(404).json({ error: "Article not found" });
+      }
+      else if(err.name === "CastError") {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export default ArticleController;

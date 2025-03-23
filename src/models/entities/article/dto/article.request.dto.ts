@@ -1,7 +1,6 @@
 import Color from "../../../enums/color";
 import Condition from "../../../enums/condition";
 import Size from "../../../enums/size";
-import Category from "../../category/category";
 
 interface ArticleRequestDTO {
   name: string;
@@ -9,7 +8,7 @@ interface ArticleRequestDTO {
   price: number;
   pictures: string[];
   condition: Condition;
-  categories: Category[];
+  categories: string[];
   size?: Size;
   color?: Color;
 }

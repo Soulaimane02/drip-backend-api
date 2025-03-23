@@ -1,7 +1,6 @@
 import Color from "../../../enums/color";
 import Condition from "../../../enums/condition";
 import Size from "../../../enums/size";
-import Category from "../../category/category";
 
 interface ArticleResponseDTO {
   id: string;
@@ -12,7 +11,7 @@ interface ArticleResponseDTO {
   likes: number;
   views: number;
   condition: Condition;
-  categories: Category[];
+  categories: string[];
   size?: Size;
   color?: Color;
 }

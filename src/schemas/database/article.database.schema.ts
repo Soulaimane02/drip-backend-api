@@ -41,7 +41,8 @@ const ArticleDatabaseSchema = new mongoose.Schema({
     required: true
   },
   categories: {
-    type: [CategoryDatabaseSchema],
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Category",
     required: true
   },
   size: {

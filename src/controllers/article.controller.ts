@@ -75,6 +75,23 @@ class ArticleController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  async deleteArticle(req: Request, res: Response) { 
+    try {
+      const id = req.params.id;
+      await this.articleService.deleteArticle(id);
+      return res.status(200).json({ message: "Article deleted successfully" });
+    }
+    catch(err: any) {
+      if(err.message === "Article not found !") {
+        return res.status(404).json({ error: "Article not found" });
+      }
+      else if(err.name === "CastError") {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export default ArticleController;

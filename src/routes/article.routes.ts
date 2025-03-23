@@ -8,5 +8,6 @@ router.get("/", articleController.getAllArticles.bind(articleController));
 router.get("/:id", articleController.getArticleById.bind(articleController));
 router.post("/", articleController.addArticle.bind(articleController));
 router.put("/:id", articleController.updateArticle.bind(articleController));
+router.delete("/:id", articleController.deleteArticle.bind(articleController));
 
 export default router;

@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import ArticleService from "../services/article.service";
+import ArticleRequestSchema from "../schemas/request/article.request.schema";
+import ArticleRequestDTO from "../models/entities/article/dto/article.request.dto";
 
 class ArticleController {
   private readonly articleService: ArticleService;
@@ -31,6 +33,22 @@ class ArticleController {
       else if(err.name === "CastError") {
         return res.status(400).json({ error: "Invalid ID format" });
       }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  async addArticle(req: Request, res: Response) {
+    try {
+      const { error, value } = ArticleRequestSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const articleDto: ArticleRequestDTO = value;
+      const addedArticle = await this.articleService.addArticle(articleDto);
+      return res.status(201).json(addedArticle);
+    }
+    catch(err: any) {
       return res.status(500).json({ error: "Internal server error" });
     }
   }

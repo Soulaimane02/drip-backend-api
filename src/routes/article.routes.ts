@@ -6,5 +6,6 @@ const articleController = new ArticleController();
 
 router.get("/", articleController.getAllArticles.bind(articleController));
 router.get("/:id", articleController.getArticleById.bind(articleController));
+router.post("/", articleController.addArticle.bind(articleController));
 
 export default router;

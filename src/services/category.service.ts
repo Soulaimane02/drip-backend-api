@@ -22,6 +22,21 @@ class CategoryService {
     return children.map((category) => this.categoryMapper.toResponseDTO(category));
   }
 
+  async getCategoryTree(categoryId: string): Promise<string> {
+    let category = await this.categoryRepository.get(categoryId);
+    let tree: string[] = [];
+  
+    while(category) {
+      tree.unshift(category.name);
+      if(!category.parent) {
+        break;
+      }
+      category = await this.categoryRepository.get(category.parent);
+    }
+  
+    return tree.join(" / ");
+  }
+
   async addCategory(categoryDto: CategoryRequestDTO): Promise<CategoryResponseDTO> {
     const category = this.categoryMapper.toEntity(categoryDto);
     const addedCategory = await this.categoryRepository.add(category);

@@ -9,8 +9,20 @@ const CategoryDatabaseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     default: null,
-    required: true
+    required: false
   }
+});
+
+CategoryDatabaseSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+CategoryDatabaseSchema.set("toJSON", {
+  virtuals: true
+});
+
+CategoryDatabaseSchema.set("toObject", {
+  virtuals: true
 });
 
 export default CategoryDatabaseSchema;

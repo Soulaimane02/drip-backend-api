@@ -59,7 +59,7 @@ class CategoryController {
       }
 
       const category: CategoryRequestDTO = value;
-      const addedCategory = this.categoryService.addCategory(category);
+      const addedCategory = await this.categoryService.addCategory(category);
       return res.status(201).json(addedCategory);
     }
     catch(err: any) {

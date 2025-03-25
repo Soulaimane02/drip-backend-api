@@ -35,6 +35,23 @@ class CategoryController {
       return res.status(500).json({ error: "Internal server error" });
     }
   }
+
+  async deleteCategory(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      await this.categoryService.deleteCategory(id);
+      return res.status(200).json({ message: "Category deleted successfully" });
+    }
+    catch(err: any) {
+      if(err.message === "Category not found !") {
+        return res.status(404).json({ error: "Category not found" });
+      }
+      else if(err.name === "CastError") {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export default CategoryController;

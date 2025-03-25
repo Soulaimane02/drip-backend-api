@@ -17,6 +17,11 @@ class CategoryService {
     return categories.map((category) => this.categoryMapper.toResponseDTO(category));
   }
 
+  async getChildrenCategories(parentId: string): Promise<CategoryResponseDTO[]> {
+    const children = await this.categoryRepository.getChildren(parentId);
+    return children.map((category) => this.categoryMapper.toResponseDTO(category));
+  }
+
   async addCategory(categoryDto: CategoryRequestDTO): Promise<CategoryResponseDTO> {
     const category = this.categoryMapper.toEntity(categoryDto);
     const addedCategory = await this.categoryRepository.add(category);

@@ -22,6 +22,11 @@ class CategoryRepository implements Repository<Category> {
     }
     return category?.toObject();
   }
+
+  async getChildren(parentId: string): Promise<Category[]> {
+    const children = await this.categoryModel.find({ parent: parentId });
+    return children.map((category) => category.toObject());
+  }
   
   async add(categoryToAdd: Category): Promise<Category> {
     const category = await new this.categoryModel(categoryToAdd).save();

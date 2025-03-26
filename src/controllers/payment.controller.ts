@@ -37,6 +37,17 @@ class PaymentController {
     }
   }
 
+  async getPaymentsByUserId(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const payments = await this.paymentService.getPaymentsByUserId(id);
+      return res.status(200).json(payments);
+    }
+    catch(err: any) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   async pay(req: Request, res: Response) {
     try {
       const { error, value } = PaymentRequestSchema.validate(req.body);
@@ -49,7 +60,6 @@ class PaymentController {
       return res.status(200).json(savedPayment);
     }
     catch(err: any) {
-      console.log(err);
       return res.status(500).json({ error: "Internal server error" });
     }
   }

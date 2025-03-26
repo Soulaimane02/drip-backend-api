@@ -4,6 +4,7 @@ import ArticleRequestSchema from "../schemas/request/article.request.schema";
 import ArticleRequestDTO from "../models/entities/article/dto/article.request.dto";
 import CategoryService from "../services/category.service";
 import dotenv from "dotenv";
+import { deleteOldPictures } from "../utils/files";
 
 dotenv.config();
 const BASE_URL = process.env.BASE_URL as string;
@@ -103,12 +104,19 @@ class ArticleController {
 
   async updateArticle(req: Request, res: Response) {
     try {
+      const id = req.params.id;
+      const existingArticle = await this.articleService.getArticleById(id);
+
+      if(req.files) {
+        deleteOldPictures(existingArticle.pictures, "article-pictures");
+        req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/article-pictures/${file.filename}`);
+      }
+
       const { error, value } = ArticleRequestSchema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });
       }
 
-      const id = req.params.id;
       const articleDto: ArticleRequestDTO = value;
       const updatedArticle = await this.articleService.updateArticle(id, articleDto);
       return res.status(201).json(updatedArticle);

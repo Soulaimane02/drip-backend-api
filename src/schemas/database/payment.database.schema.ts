@@ -16,6 +16,6 @@ const PaymentDatabaseSchema = new mongoose.Schema({
     ref: "Article",
     required: true
   }
-});
+}, { timestamps: true });
 
 export default PaymentDatabaseSchema;

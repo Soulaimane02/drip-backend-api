@@ -8,6 +8,7 @@ class PaymentMapper implements Mapper<Payment, PaymentRequestDTO, PaymentRespons
     return {
       id: "",
       amount: dto.amount,
+      description: "",
       userId: dto.userId,
       articleId: dto.articleId,
     };
@@ -25,6 +26,7 @@ class PaymentMapper implements Mapper<Payment, PaymentRequestDTO, PaymentRespons
     return {
       id: entity.id,
       amount: entity.amount,
+      description: entity.description,
       userId: entity.userId,
       articleId: entity.articleId,
     };

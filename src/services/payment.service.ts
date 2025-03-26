@@ -34,12 +34,13 @@ class PaymentService {
     const paymentIntent = await this.stripeService.paymentIntents.create({
       amount: paymentDto.amount,
       currency: "usd",
-      description: `Paiement pour l'article ${paymentDto.articleId}`,
+      description: `Payment for article ${paymentDto.articleId} by user ${paymentDto.userId}`,
     });
 
-    const paymentToSave: Payment = this.paymentMapper.toEntity(paymentDto);
-    paymentToSave.id = paymentIntent.id;
-    const savedPayment = await this.paymentRepository.add(paymentToSave);
+    const payment: Payment = this.paymentMapper.toEntity(paymentDto);
+    payment.id = paymentIntent.id;
+    payment.description = paymentIntent.description!;
+    const savedPayment = await this.paymentRepository.add(payment);
     return this.paymentMapper.toResponseDTO(savedPayment);
   }
 

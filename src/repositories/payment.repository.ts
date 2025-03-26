@@ -28,6 +28,11 @@ class PaymentRepository implements Repository<Payment> {
     return payments.map((payment) => payment.toObject());
   }
 
+  async getByArticleId(articleId: string): Promise<Payment[]> {
+    const payments = await this.paymentModel.find({ articleId });
+    return payments.map((payment) => payment.toObject());
+  }
+
   async add(paymentToAdd: Payment): Promise<Payment> {
     const payment = await new this.paymentModel(paymentToAdd).save();
     return payment.toObject();

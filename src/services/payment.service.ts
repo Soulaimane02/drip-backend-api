@@ -38,6 +38,11 @@ class PaymentService {
     return payments.map((payment) => this.paymentMapper.toResponseDTO(payment));
   }
 
+  async getPaymentsByArticleId(articleId: string): Promise<PaymentResponseDTO[]> {
+    const payments = await this.paymentRepository.getByArticleId(articleId);
+    return payments.map((payment) => this.paymentMapper.toResponseDTO(payment));
+  }
+
   async createPayment(paymentDto: PaymentRequestDTO): Promise<PaymentResponseDTO> {
     const article = await this.articleRepository.get(paymentDto.articleId);
 

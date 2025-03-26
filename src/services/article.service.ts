@@ -22,6 +22,11 @@ class ArticleService {
     return this.articleMapper.toResponseDTO(article);
   }
 
+  async getArticlesByCategory(categoryId: string): Promise<ArticleResponseDTO[]> {
+    const articles = await this.articleRepository.getByCategory(categoryId);
+    return articles.map((article) => this.articleMapper.toResponseDTO(article));
+  }
+
   async addArticle(articleDto: ArticleRequestDTO): Promise<ArticleResponseDTO> {
     const article = this.articleMapper.toEntity(articleDto);
     const addedArticle = await this.articleRepository.add(article);

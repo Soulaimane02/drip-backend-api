@@ -40,17 +40,30 @@ class ArticleController {
     }
   }
 
+  async getArticlesByCategory(req: Request, res: Response) {
+    try {
+      const categoryId = req.params.id;
+      const articles = await this.articleService.getArticlesByCategory(categoryId);
+      return res.status(200).json(articles);
+    }
+    catch(err: any) {
+      if(err.name === "CastError") {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   async getCategoryTreesOfArticle(req: Request, res: Response) {
     try {
       const id = req.params.id;
       const article = await this.articleService.getArticleById(id);
-      let trees: string[] = [];
 
-      article.categories.forEach(async (category) => {
-        const tree = await this.categoryService.getCategoryTree(category);
-        trees.push(tree);
+      const treePromises = article.categories.map(async (category) => {
+        return await this.categoryService.getCategoryTree(category);
       });
 
+      const trees = await Promise.all(treePromises);
       return res.status(200).json({ trees: trees });
     }
     catch(err: any) {

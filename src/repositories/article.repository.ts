@@ -22,6 +22,11 @@ class ArticleRepository implements Repository<Article> {
     }
     return article?.toObject();
   }
+
+  async getByCategory(categoryId: string): Promise<Article[]> {
+    const articles = await this.articleModel.find({ categories: categoryId });
+    return articles.map((article) => article.toObject());
+  }
   
   async add(articleToAdd: Article): Promise<Article> {
     const article = await new this.articleModel(articleToAdd).save();

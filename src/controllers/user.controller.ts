@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import UserService from "../services/user.service";
 import UserRequestSchema from "../schemas/request/user.request.schema";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
+import dotenv from "dotenv";
+import { deleteOldPicture } from "../utils/files";
+
+dotenv.config();
+const BASE_URL = process.env.BASE_URL as string;
 
 class UserController {
   private readonly userService: UserService;
@@ -39,12 +44,19 @@ class UserController {
 
   async updateUser(req: Request, res: Response) {
     try {
+      const id = req.params.id;
+      const existingUser = await this.userService.getUserById(id);
+
+      if(req.file) {
+        deleteOldPicture(existingUser.profilePicture, "profile-pictures");
+        req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
+      }
+
       const { error, value } = UserRequestSchema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });
       }
 
-      const id = req.params.id;
       const userDto: UserRequestDTO = value;
       const updatedUser = await this.userService.updateUser(id, userDto);
       return res.status(201).json(updatedUser);

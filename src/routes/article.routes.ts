@@ -10,7 +10,7 @@ router.get("/:id", articleController.getArticleById.bind(articleController));
 router.get("/category/:id", articleController.getArticlesByCategory.bind(articleController));
 router.get("/categories/trees/:id", articleController.getCategoryTreesOfArticle.bind(articleController));
 router.post("/", uploadArticleConfig, articleController.addArticle.bind(articleController));
-router.put("/:id", articleController.updateArticle.bind(articleController));
+router.put("/:id", uploadArticleConfig, articleController.updateArticle.bind(articleController));
 router.delete("/:id", articleController.deleteArticle.bind(articleController));
 
 export default router;

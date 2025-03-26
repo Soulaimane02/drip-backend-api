@@ -7,28 +7,30 @@ class PaymentMapper implements Mapper<Payment, PaymentRequestDTO, PaymentRespons
   toEntity(dto: PaymentRequestDTO): Payment {
     return {
       id: "",
-      amount: dto.amount,
+      amount: 0,
       description: "",
       userId: dto.userId,
       articleId: dto.articleId,
+      stripeId: "",
+      createdAt: new Date()
     };
   }
 
   toRequestDTO(entity: Payment): PaymentRequestDTO {
     return {
-      amount: entity.amount,
       userId: entity.userId,
-      articleId: entity.articleId,
+      articleId: entity.articleId
     };
   }
 
   toResponseDTO(entity: Payment): PaymentResponseDTO {
     return {
       id: entity.id,
-      amount: entity.amount,
       description: entity.description,
       userId: entity.userId,
       articleId: entity.articleId,
+      stripeId: entity.stripeId,
+      createdAt: entity.createdAt
     };
   }
 }

@@ -2,6 +2,7 @@ import PaymentRepository from "../repositories/payment.repository";
 import Payment from "../models/entities/payment/payment";
 import PaymentRequestDTO from "../models/entities/payment/dto/payment.request.dto";
 import PaymentResponseDTO from "../models/entities/payment/dto/payment.response.dto";
+import ArticleRepository from "../repositories/article.repository";
 import PaymentMapper from "../mappers/payment.mapper";
 import Stripe from "stripe";
 import dotenv from "dotenv";
@@ -12,11 +13,13 @@ const STRIPE_API_KEY = process.env.STRIPE_API_KEY as string;
 class PaymentService {
   private readonly paymentRepository: PaymentRepository;
   private readonly paymentMapper: PaymentMapper;
+  private readonly articleRepository: ArticleRepository;
   private readonly stripeService: Stripe
 
   constructor() {
     this.paymentRepository = new PaymentRepository();
     this.paymentMapper = new PaymentMapper();
+    this.articleRepository = new ArticleRepository();
     this.stripeService = new Stripe(STRIPE_API_KEY);
   }
 
@@ -31,14 +34,17 @@ class PaymentService {
   }
 
   async createPayment(paymentDto: PaymentRequestDTO): Promise<PaymentResponseDTO> {
+    const article = await this.articleRepository.get(paymentDto.articleId);
+
     const paymentIntent = await this.stripeService.paymentIntents.create({
-      amount: paymentDto.amount,
-      currency: "usd",
+      amount: article.price * 100,
+      currency: "eur",
       description: `Payment for article ${paymentDto.articleId} by user ${paymentDto.userId}`,
     });
 
     const payment: Payment = this.paymentMapper.toEntity(paymentDto);
-    payment.id = paymentIntent.id;
+    payment.stripeId = paymentIntent.id;
+    payment.amount = paymentIntent.amount / 100;
     payment.description = paymentIntent.description!;
     const savedPayment = await this.paymentRepository.add(payment);
     return this.paymentMapper.toResponseDTO(savedPayment);

@@ -33,21 +33,39 @@ class PaymentService {
     return this.paymentMapper.toResponseDTO(payment);
   }
 
+  async getPaymentsByUserId(userId: string): Promise<PaymentResponseDTO[]> {
+    const payments = await this.paymentRepository.getByUserId(userId);
+    return payments.map((payment) => this.paymentMapper.toResponseDTO(payment));
+  }
+
+  async getPaymentsByArticleId(articleId: string): Promise<PaymentResponseDTO[]> {
+    const payments = await this.paymentRepository.getByArticleId(articleId);
+    return payments.map((payment) => this.paymentMapper.toResponseDTO(payment));
+  }
+
   async createPayment(paymentDto: PaymentRequestDTO): Promise<PaymentResponseDTO> {
-    const article = await this.articleRepository.get(paymentDto.articleId);
+    try {
+      const article = await this.articleRepository.get(paymentDto.articleId);
 
-    const paymentIntent = await this.stripeService.paymentIntents.create({
-      amount: article.price * 100,
-      currency: "eur",
-      description: `Payment for article ${paymentDto.articleId} by user ${paymentDto.userId}`,
-    });
+      const paymentIntent = await this.stripeService.paymentIntents.create({
+        amount: article.price * 100,
+        currency: "eur",
+        description: `Payment for article ${paymentDto.articleId} by user ${paymentDto.userId}`,
+      });
 
-    const payment: Payment = this.paymentMapper.toEntity(paymentDto);
-    payment.stripeId = paymentIntent.id;
-    payment.amount = paymentIntent.amount / 100;
-    payment.description = paymentIntent.description!;
-    const savedPayment = await this.paymentRepository.add(payment);
-    return this.paymentMapper.toResponseDTO(savedPayment);
+      const payment: Payment = this.paymentMapper.toEntity(paymentDto);
+      payment.stripeId = paymentIntent.id;
+      payment.amount = paymentIntent.amount / 100;
+      payment.description = paymentIntent.description!;
+      const savedPayment = await this.paymentRepository.add(payment);
+      return this.paymentMapper.toResponseDTO(savedPayment);
+    }
+    catch(err: any) {
+      if(err instanceof Stripe.errors.StripeError) {
+        throw new Error(err.message);
+      }
+      throw new Error("Unexpected payment error");
+    }
   }
 
   async deletePayment(id: string): Promise<void> {

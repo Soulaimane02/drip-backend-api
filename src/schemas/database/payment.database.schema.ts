@@ -18,16 +18,4 @@ const PaymentDatabaseSchema = new mongoose.Schema({
   }
 });
 
-PaymentDatabaseSchema.virtual("id").get(function () {
-  return this._id.toHexString();
-});
-
-PaymentDatabaseSchema.set("toJSON", {
-  virtuals: true
-});
-
-PaymentDatabaseSchema.set("toObject", {
-  virtuals: true
-});
-
 export default PaymentDatabaseSchema;

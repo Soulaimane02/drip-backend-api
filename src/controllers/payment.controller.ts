@@ -37,6 +37,28 @@ class PaymentController {
     }
   }
 
+  async getPaymentsByUserId(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const payments = await this.paymentService.getPaymentsByUserId(id);
+      return res.status(200).json(payments);
+    }
+    catch(err: any) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  async getPaymentsByArticleId(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const payments = await this.paymentService.getPaymentsByArticleId(id);
+      return res.status(200).json(payments);
+    }
+    catch(err: any) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   async pay(req: Request, res: Response) {
     try {
       const { error, value } = PaymentRequestSchema.validate(req.body);
@@ -49,7 +71,21 @@ class PaymentController {
       return res.status(200).json(savedPayment);
     }
     catch(err: any) {
-      console.log(err);
+      if (err.message.includes("card_declined")) {
+        return res.status(402).json({ error: "Your card was declined. Please try another payment method." });
+      }
+      else if(err.message.includes("insufficient_funds")) {
+        return res.status(402).json({ error: "Insufficient funds. Please check your balance." });
+      }
+      else if(err.message.includes("incorrect_cvc")) {
+        return res.status(400).json({ error: "Incorrect security code. Please try again." });
+      }
+      else if(err.message.includes("expired_card")) {
+        return res.status(400).json({ error: "Your card has expired. Please use another card." });
+      }
+      else if(err.message.includes("processing_error")) {
+        return res.status(500).json({ error: "Payment processing error. Please try again later." });
+      }
       return res.status(500).json({ error: "Internal server error" });
     }
   }

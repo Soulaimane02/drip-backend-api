@@ -10,7 +10,8 @@ class UserMapper implements Mapper<User, UserRequestDTO, UserResponseDTO> {
       email: dto.email,
       firstName: dto.firstName,
       lastName: dto.lastName,
-      rating: dto.rating,
+      rating: 0,
+      profilePicture: dto.profilePicture,
       password: {
         hash: dto.password.hash,
         salt: dto.password.salt
@@ -24,7 +25,7 @@ class UserMapper implements Mapper<User, UserRequestDTO, UserResponseDTO> {
       email: entity.email,
       firstName: entity.firstName,
       lastName: entity.lastName,
-      rating: entity.rating,
+      profilePicture: entity.profilePicture,
       password: entity.password,
       role: entity.role
     };
@@ -37,6 +38,7 @@ class UserMapper implements Mapper<User, UserRequestDTO, UserResponseDTO> {
       firstName: entity.firstName,
       lastName: entity.lastName,
       rating: entity.rating,
+      profilePicture: entity.profilePicture,
       role: entity.role
     };
   }

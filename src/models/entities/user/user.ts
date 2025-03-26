@@ -7,6 +7,7 @@ interface User {
   firstName: string;
   lastName: string;
   rating: number;
+  profilePicture: string;
   password: Password;
   role: Role;
 }

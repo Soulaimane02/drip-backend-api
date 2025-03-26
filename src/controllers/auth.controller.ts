@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import AuthService from "../services/auth.service";
 import UserRequestSchema from "../schemas/request/user.request.schema";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
+import dotenv from "dotenv";
+
+dotenv.config();
+const BASE_URL = process.env.BASE_URL as string;
 
 class AuthController {
   private readonly authService: AuthService;
@@ -12,13 +16,16 @@ class AuthController {
 
   async register(req: Request, res: Response) {
     try {
+      if(req.file) {
+        req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
+      }
+
       const { error, value } = UserRequestSchema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });
       }
 
       const userDto: UserRequestDTO = value;
-
       const token = await this.authService.register(userDto, req.body.password);
       return res.status(200).json({ token: token });
     }

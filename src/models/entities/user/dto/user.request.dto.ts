@@ -5,7 +5,7 @@ interface UserRequestDTO {
   email: string;
   firstName: string;
   lastName: string;
-  rating: number;
+  profilePicture: string;
   password: Password;
   role: Role;
 }

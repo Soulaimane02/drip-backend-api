@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
 import { middleware } from "./config/middlewares";
+import uploadsRoutes from "./routes/uploads.routes";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
 import articleRoutes from "./routes/article.routes";
@@ -21,6 +22,7 @@ app.use(cors({
 middleware(app);
 connectDB();
 
+app.use("/uploads", uploadsRoutes);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/articles", articleRoutes);

@@ -3,6 +3,10 @@ import ArticleService from "../services/article.service";
 import ArticleRequestSchema from "../schemas/request/article.request.schema";
 import ArticleRequestDTO from "../models/entities/article/dto/article.request.dto";
 import CategoryService from "../services/category.service";
+import dotenv from "dotenv";
+
+dotenv.config();
+const BASE_URL = process.env.BASE_URL as string;
 
 class ArticleController {
   private readonly articleService: ArticleService;
@@ -79,6 +83,10 @@ class ArticleController {
 
   async addArticle(req: Request, res: Response) {
     try {
+      if(req.files) {
+        req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/article-pictures/${file.filename}`);
+      }
+
       const { error, value } = ArticleRequestSchema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });

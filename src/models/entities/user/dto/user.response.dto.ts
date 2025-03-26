@@ -6,6 +6,7 @@ interface UserResponseDTO {
   firstName: string;
   lastName: string;
   rating: number;
+  profilePicture: string;
   role: Role;
 }
 

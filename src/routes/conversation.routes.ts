@@ -5,5 +5,6 @@ const router = express.Router();
 const conversationController = new ConversationController();
 
 router.get("/", conversationController.getAllConversations.bind(conversationController));
+router.get("/:id", conversationController.getConversationById.bind(conversationController));
 
 export default router;

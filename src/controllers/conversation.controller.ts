@@ -17,6 +17,23 @@ class ConversationController {
       return res.status(500).json({ error: "Internal server error" });
     }
   } 
+
+  async getConversationById(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const conversation = await this.conversationService.getConversationById(id);
+      return res.status(200).json(conversation);
+    }
+    catch(err: any) {
+      if(err.message === "Conversation not found !") {
+        return res.status(404).json({ error: "Conversation not found" });
+      }
+      else if(err.name === "CastError") {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 }
 
 export default ConversationController;

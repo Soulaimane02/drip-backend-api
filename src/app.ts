@@ -9,6 +9,7 @@ import userRoutes from "./routes/user.routes";
 import articleRoutes from "./routes/article.routes";
 import categoryRoutes from "./routes/category.routes";
 import paymentRoutes from "./routes/payment.routes";
+import conversationRoutes from "./routes/conversation.routes";
 
 dotenv.config();
 const IP_ADRESS = process.env.IP_ADRESS as string;
@@ -29,5 +30,6 @@ app.use("/users", userRoutes);
 app.use("/articles", articleRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/payments", paymentRoutes);
+app.use("/conversations", conversationRoutes);
 
 export default app;

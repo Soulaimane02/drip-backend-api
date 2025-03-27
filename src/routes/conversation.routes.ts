@@ -6,5 +6,6 @@ const conversationController = new ConversationController();
 
 router.get("/", conversationController.getAllConversations.bind(conversationController));
 router.get("/:id", conversationController.getConversationById.bind(conversationController));
+router.post("/", conversationController.startConversation.bind(conversationController));
 
 export default router;

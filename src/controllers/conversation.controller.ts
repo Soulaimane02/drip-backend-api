@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import ConversationService from "../services/conversation.service";
+import ConversationRequestSchema from "../schemas/request/conversation.request.schema";
+import ConversationRequestDTO from "../models/entities/conversation/dto/conversation.request.dto";
 
 class ConversationController {
   private readonly conversationService: ConversationService;
@@ -31,6 +33,22 @@ class ConversationController {
       else if(err.name === "CastError") {
         return res.status(400).json({ error: "Invalid ID format" });
       }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
+  async startConversation(req: Request, res: Response) {
+    try {
+      const { error, value } = ConversationRequestSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const conversation: ConversationRequestDTO = value;
+      const addedConversation = await this.conversationService.createConversation(conversation);
+      return res.status(200).json(addedConversation);
+    }
+    catch(err: any) {
       return res.status(500).json({ error: "Internal server error" });
     }
   }

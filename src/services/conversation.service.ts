@@ -22,7 +22,7 @@ class ConversationService {
     return this.conversationMapper.toResponseDTO(conversation);
   }
 
-  async addConversation(conversationDto: ConversationRequestDTO): Promise<ConversationResponseDTO> {
+  async createConversation(conversationDto: ConversationRequestDTO): Promise<ConversationResponseDTO> {
     const conversation = this.conversationMapper.toEntity(conversationDto);
     const addedConversation = await this.conversationRepository.add(conversation);
     return this.conversationMapper.toResponseDTO(addedConversation);

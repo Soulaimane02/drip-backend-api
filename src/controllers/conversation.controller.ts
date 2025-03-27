@@ -37,6 +37,17 @@ class ConversationController {
     }
   }
 
+  async getConversationsByUserId(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const conversations = await this.conversationService.getConversationsByUserId(id);
+      return res.status(200).json(conversations);
+    }
+    catch(err: any) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   async startConversation(req: Request, res: Response) {
     try {
       const { error, value } = ConversationRequestSchema.validate(req.body);

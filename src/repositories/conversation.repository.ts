@@ -23,6 +23,13 @@ class ConversationRepository implements Repository<Conversation> {
     return conversation?.toObject();
   }
 
+  async getByUserId(userId: string): Promise<Conversation[]> {
+    const conversations = await this.conversationModel.find({
+      $or: [{ firstUserId: userId }, { secondUserId: userId }]
+    });
+    return conversations.map((conversation) => conversation.toObject());
+  }
+
   async add(conversationToAdd: Conversation): Promise<Conversation> {
     const conversation = await new this.conversationModel(conversationToAdd).save();
     return conversation.toObject();

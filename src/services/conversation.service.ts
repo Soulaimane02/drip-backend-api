@@ -17,6 +17,11 @@ class ConversationService {
     return conversations.map((conversation) => this.conversationMapper.toResponseDTO(conversation));
   }
 
+  async getConversationsByUserId(userId: string): Promise<ConversationResponseDTO[]> {
+    const conversations = await this.conversationRepository.getByUserId(userId);
+    return conversations.map((conversation) => this.conversationMapper.toResponseDTO(conversation));
+  }
+
   async getConversationById(id: string): Promise<ConversationResponseDTO> {
     const conversation = await this.conversationRepository.get(id);
     return this.conversationMapper.toResponseDTO(conversation);

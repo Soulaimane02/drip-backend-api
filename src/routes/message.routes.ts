@@ -7,6 +7,7 @@ const messageRoutes = (io: Server) => {
   const messageController = new MessageController(io);
 
   router.get("/", messageController.getAllMessages.bind(messageController));
+  router.get("/:id", messageController.getMessageById.bind(messageController));
 
   return router;
 };

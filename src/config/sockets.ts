@@ -2,6 +2,7 @@ import { Express } from "express";
 import http from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
+import ConversationService from "../services/conversation.service";
 import MessageService from "../services/message.service";
 
 dotenv.config();
@@ -17,10 +18,12 @@ const initSockets = (app: Express) => {
     }
   });
 
+  const conversationService = new ConversationService(io);
   const messageService = new MessageService(io);
   
   io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
+    conversationService.setupSocketListeners(socket);
     messageService.setupSocketListeners(socket);
   
     socket.on("disconnect", () => {
@@ -28,7 +31,7 @@ const initSockets = (app: Express) => {
     });
   });
 
-  return server;
+  return { server, io };
 }
 
 export default initSockets;

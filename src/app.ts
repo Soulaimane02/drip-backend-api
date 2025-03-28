@@ -16,7 +16,7 @@ dotenv.config();
 const IP_ADRESS = process.env.IP_ADRESS as string;
 
 const app = express();
-const server = initSockets(app);
+const { server, io } = initSockets(app);
 
 app.use(cors({
   origin: IP_ADRESS,
@@ -32,6 +32,6 @@ app.use("/users", userRoutes);
 app.use("/articles", articleRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/payments", paymentRoutes);
-app.use("/conversations", conversationRoutes);
+app.use("/conversations", conversationRoutes(io));
 
 export { app, server };

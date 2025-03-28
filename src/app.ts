@@ -10,11 +10,29 @@ import articleRoutes from "./routes/article.routes";
 import categoryRoutes from "./routes/category.routes";
 import paymentRoutes from "./routes/payment.routes";
 import conversationRoutes from "./routes/conversation.routes";
+import http from "http";
+import { Server } from "socket.io";
 
 dotenv.config();
 const IP_ADRESS = process.env.IP_ADRESS as string;
 
 const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: IP_ADRESS,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  }
+})
+
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("disconnect", () => {
+    console.log(`User disconnected: ${socket.id}`);
+  });
+})
 
 app.use(cors({
   origin: IP_ADRESS,
@@ -32,4 +50,4 @@ app.use("/categories", categoryRoutes);
 app.use("/payments", paymentRoutes);
 app.use("/conversations", conversationRoutes);
 
-export default app;
+export { app, server };

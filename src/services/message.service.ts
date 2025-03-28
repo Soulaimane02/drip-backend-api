@@ -15,7 +15,7 @@ class MessageService {
     this.io = io;
   }
 
-  async getMessages(): Promise<MessageResponseDTO[]> {
+  async getAllMessages(): Promise<MessageResponseDTO[]> {
     const messages = await this.messageRepository.getAll();
     return messages.map((message) => this.messageMapper.toResponseDTO(message));
   }

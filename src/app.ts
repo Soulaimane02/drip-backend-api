@@ -10,6 +10,7 @@ import articleRoutes from "./routes/article.routes";
 import categoryRoutes from "./routes/category.routes";
 import paymentRoutes from "./routes/payment.routes";
 import conversationRoutes from "./routes/conversation.routes";
+import messageRoutes from "./routes/message.routes";
 import initSockets from "./config/sockets";
 
 dotenv.config();
@@ -33,5 +34,6 @@ app.use("/articles", articleRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/payments", paymentRoutes);
 app.use("/conversations", conversationRoutes(io));
+app.use("/messages", messageRoutes(io));
 
 export { app, server };

@@ -10,6 +10,7 @@ const messageRoutes = (io: Server) => {
   router.get("/:id", messageController.getMessageById.bind(messageController));
   router.post("/", messageController.sendMessage.bind(messageController));
   router.put("/:id", messageController.updateMessage.bind(messageController));
+  router.delete("/:id", messageController.deleteMessage.bind(messageController));
 
   return router;
 };

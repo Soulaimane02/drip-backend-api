@@ -1,10 +1,9 @@
 import express from "express";
 import ConversationController from "../controllers/conversation.controller";
-import { Server } from "socket.io";
 
-const conversationRoutes = (io: Server) => {
+const conversationRoutes = () => {
   const router = express.Router();
-  const conversationController = new ConversationController(io);
+  const conversationController = new ConversationController();
 
   router.get("/", conversationController.getAllConversations.bind(conversationController));
   router.get("/:id", conversationController.getConversationById.bind(conversationController));

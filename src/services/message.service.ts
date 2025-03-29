@@ -3,15 +3,18 @@ import MessageRepository from "../repositories/message.repository";
 import MessageResponseDTO from "../models/entities/message/dto/message.response.dto";
 import MessageMapper from "../mappers/message.mapper";
 import MessageRequestDTO from "../models/entities/message/dto/message.request.dto";
+import ConversationRepository from "../repositories/conversation.repository";
 
 class MessageService {
   private readonly messageRepository: MessageRepository;
   private readonly messageMapper: MessageMapper;
+  private readonly conversationRepository: ConversationRepository;
   private readonly io: Server;
 
   constructor(io: Server) {
     this.messageRepository = new MessageRepository();
     this.messageMapper = new MessageMapper();
+    this.conversationRepository = new ConversationRepository();
     this.io = io;
   }
 
@@ -29,7 +32,11 @@ class MessageService {
     const message = this.messageMapper.toEntity(messageDto);
     const newMessage = await this.messageRepository.add(message);
     const messageResponse = this.messageMapper.toResponseDTO(newMessage);
-    this.io.to(messageDto.conversationId).emit("mesageSent", messageResponse);
+
+    const conversation = await this.conversationRepository.get(messageDto.conversationId);
+    this.io.to(conversation.firstUserId).emit("messageSent", messageResponse);
+    this.io.to(conversation.secondUserId).emit("messageSent", messageResponse);
+
     return messageResponse;
   }
 
@@ -37,15 +44,21 @@ class MessageService {
     const message = this.messageMapper.toEntity(messageDto);
     const updatedMessage = await this.messageRepository.put(id, message);
     const messageResponse = this.messageMapper.toResponseDTO(updatedMessage);
-    this.io.to(messageDto.conversationId).emit("messageUpdated", messageResponse);
+
+    const conversation = await this.conversationRepository.get(messageDto.conversationId);
+    this.io.to(conversation.firstUserId).emit("messageUpdated", messageResponse);
+    this.io.to(conversation.secondUserId).emit("messageUpdated", messageResponse);
+
     return messageResponse;
   }
 
   async deleteMessage(id: string): Promise<void> {
     const message = await this.messageRepository.get(id);
-    const conversationId = message.conversationId;
+    const conversation = await this.conversationRepository.get(message.conversationId);
     await this.messageRepository.delete(id);
-    this.io.to(conversationId).emit("messageDeleted", id);
+
+    this.io.to(conversation.firstUserId).emit("messageDeleted", id);
+    this.io.to(conversation.secondUserId).emit("messageDeleted", id);
   }
 
   setupSocketListeners(socket: Socket): void {

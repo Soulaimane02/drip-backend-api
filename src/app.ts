@@ -33,7 +33,7 @@ app.use("/users", userRoutes);
 app.use("/articles", articleRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/payments", paymentRoutes);
-app.use("/conversations", conversationRoutes(io));
+app.use("/conversations", conversationRoutes());
 app.use("/messages", messageRoutes(io));
 
 export { app, server };

@@ -2,13 +2,12 @@ import { Request, Response } from "express";
 import ConversationService from "../services/conversation.service";
 import ConversationRequestSchema from "../schemas/request/conversation.request.schema";
 import ConversationRequestDTO from "../models/entities/conversation/dto/conversation.request.dto";
-import { Server } from "socket.io";
 
 class ConversationController {
   private readonly conversationService: ConversationService;
 
-  constructor(io: Server) {
-    this.conversationService = new ConversationService(io);
+  constructor() {
+    this.conversationService = new ConversationService();
   }
 
   async getAllConversations(req: Request, res: Response) {

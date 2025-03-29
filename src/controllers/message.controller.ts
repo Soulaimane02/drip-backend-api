@@ -3,6 +3,11 @@ import MessageService from "../services/message.service";
 import MessageRequestSchema from "../schemas/request/message.request.schema";
 import { Server } from "socket.io";
 import MessageRequestDTO from "../models/entities/message/dto/message.request.dto";
+import dotenv from "dotenv";
+import { deleteOldPictures } from "../utils/files";
+
+dotenv.config();
+const BASE_URL = process.env.BASE_URL as string;
 
 class MessageController {
   private readonly messageService: MessageService;
@@ -40,6 +45,10 @@ class MessageController {
 
   async sendMessage(req: Request, res: Response) {
     try {
+      if(req.files) {
+        req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/message-pictures/${file.filename}`);
+      }
+
       const { error, value } = MessageRequestSchema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });
@@ -56,12 +65,19 @@ class MessageController {
 
   async updateMessage(req: Request, res: Response) {
     try {
+      const id = req.params.id;
+      const existingMessage = await this.messageService.getMessageById(id);
+
+      if(req.files) {
+        deleteOldPictures(existingMessage.pictures as string[], "message-pictures");
+        req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/message-pictures/${file.filename}`);
+      }
+
       const { error, value } = MessageRequestSchema.validate(req.body);
       if (error) {
         return res.status(400).json({ error: error.details[0].message });
       }
 
-      const id = req.params.id;
       const messageDto: MessageRequestDTO = value;
       const updatedMessage = await this.messageService.updateMessage(id, messageDto);
       return res.status(200).json(updatedMessage);

@@ -25,6 +25,10 @@ const MessageDatabaseSchema = new mongoose.Schema({
     ref: "Conversation",
     required: true
   },
+  pictures: {
+    type: [String],
+    required: true
+  },
   articleId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Article",

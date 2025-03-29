@@ -6,6 +6,7 @@ interface MessageRequestDTO {
   isOffer: boolean;
   userId: string;
   conversationId: string;
+  pictures?: string[];
   offer?: Offer;
 }
 

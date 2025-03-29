@@ -8,6 +8,7 @@ interface MessageResponseDTO {
   createdAt: Date;
   userId: string;
   conversationId: string;
+  pictures?: string[];
   offer?: Offer;
 }
 

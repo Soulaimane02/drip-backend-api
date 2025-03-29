@@ -8,6 +8,7 @@ interface Message {
   createdAt: Date;
   userId: string;
   conversationId: string;
+  pictures?: string[];
   offer?: Offer;
 }
 

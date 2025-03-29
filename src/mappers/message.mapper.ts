@@ -13,6 +13,7 @@ class MessageMapper implements Mapper<Message, MessageRequestDTO, MessageRespons
       createdAt: new Date(),
       userId: dto.userId,
       conversationId: dto.conversationId,
+      pictures: dto.pictures,
       offer: dto.offer
     }
   }
@@ -24,6 +25,7 @@ class MessageMapper implements Mapper<Message, MessageRequestDTO, MessageRespons
       isOffer: entity.isOffer,
       userId: entity.userId,
       conversationId: entity.conversationId,
+      pictures: entity.pictures,
       offer: entity.offer
     }
   }
@@ -37,6 +39,7 @@ class MessageMapper implements Mapper<Message, MessageRequestDTO, MessageRespons
       createdAt: entity.createdAt,
       userId: entity.userId,
       conversationId: entity.conversationId,
+      pictures: entity.pictures,
       offer: entity.offer
     }
   }

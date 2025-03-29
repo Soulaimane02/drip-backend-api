@@ -1,3 +1,5 @@
+import Offer from "../offer/offer";
+
 interface Message {
   id: string;
   content: string;
@@ -6,7 +8,7 @@ interface Message {
   createdAt: Date;
   userId: string;
   conversationId: string;
-  articleId?: string;
+  offer?: Offer;
 }
 
 export default Message;

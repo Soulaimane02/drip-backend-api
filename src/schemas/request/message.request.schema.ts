@@ -1,5 +1,6 @@
 import joi from "joi";
 import Message from "../../models/entities/message/message";
+import Offer from "../../models/entities/offer/offer";
 
 const MessageRequestSchema = joi.object<Message>({
   content: joi.string().min(1).required(),
@@ -7,7 +8,7 @@ const MessageRequestSchema = joi.object<Message>({
   isOffer: joi.boolean().required(),
   userId: joi.string().hex().length(24).required(),
   conversationId: joi.string().hex().length(24).required(),
-  articleId: joi.string().hex().length(24).optional()
+  offer: joi.object<Offer>().optional()
 });
 
 export default MessageRequestSchema;

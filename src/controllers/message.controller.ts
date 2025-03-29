@@ -77,6 +77,27 @@ class MessageController {
     }
   }
 
+  async respondOffer(req: Request, res: Response) {
+    try {
+      const id = req.params.id;
+      const isAccepted = req.body.isAccepted;
+      const updatedMessage = await this.messageService.respondOffer(id, isAccepted);
+      return res.status(200).json(updatedMessage);
+    }
+    catch(err: any) {
+      if(err.message === "Message not found !") {
+        return res.status(404).json({ error: "Message not found" });
+      }
+      else if(err.message === "No offer associated with this message !") {
+        return res.status(400).json({ error: "No offer associated with this message" });
+      }
+      else if(err.name === "CastError") {
+        return res.status(400).json({ error: "Invalid ID format" });
+      }
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   async deleteMessage(req: Request, res: Response) {
     try {
       const id = req.params.id;

@@ -1,3 +1,5 @@
+import Offer from "../../offer/offer";
+
 interface MessageResponseDTO {
   id: string;
   content: string;
@@ -6,7 +8,7 @@ interface MessageResponseDTO {
   createdAt: Date;
   userId: string;
   conversationId: string;
-  articleId?: string;
+  offer?: Offer;
 }
 
 export default MessageResponseDTO;

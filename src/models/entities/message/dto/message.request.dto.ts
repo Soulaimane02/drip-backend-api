@@ -1,10 +1,12 @@
+import Offer from "../../offer/offer";
+
 interface MessageRequestDTO {
   content: string;
   isUpdated: boolean;
   isOffer: boolean;
   userId: string;
   conversationId: string;
-  articleId?: string;
+  offer?: Offer;
 }
 
 export default MessageRequestDTO;

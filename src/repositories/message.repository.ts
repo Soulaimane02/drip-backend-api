@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Repository from "../config/repository";
 import Message from "../models/entities/message/message";
 import MessageDatabaseSchema from "../schemas/database/message.database.schema";
+import OfferStatus from "../models/enums/offer.status";
 
 class MessageRepository implements Repository<Message> {
   private readonly messageModel;
@@ -34,6 +35,20 @@ class MessageRepository implements Repository<Message> {
       throw new Error("Message not found !");
     }
     return message?.toObject();
+  }
+
+  async updateOfferStatus(messageId: string, isAccepted: boolean): Promise<Message> {
+    const message = await this.messageModel.findById(messageId);
+    if(!message) {
+      throw new Error("Message not found !");
+    }
+    if(!message.offer) {
+      throw new Error("No offer associated with this message !");
+    }
+
+    message.offer.status = isAccepted ? OfferStatus.ACCEPTED : OfferStatus.REJECTED;
+    const updatedMessage = await message.save();
+    return updatedMessage.toObject();
   }
   
   async delete(id: String): Promise<void> {

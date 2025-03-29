@@ -52,6 +52,11 @@ class MessageService {
     return messageResponse;
   }
 
+  async respondOffer(id: string, isAccepted: boolean): Promise<MessageResponseDTO> {
+    const updatedMessage = await this.messageRepository.updateOfferStatus(id, isAccepted);
+    return this.messageMapper.toResponseDTO(updatedMessage);
+  }
+
   async deleteMessage(id: string): Promise<void> {
     const message = await this.messageRepository.get(id);
     const conversation = await this.conversationRepository.get(message.conversationId);

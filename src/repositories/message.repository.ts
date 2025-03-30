@@ -37,6 +37,13 @@ class MessageRepository implements Repository<Message> {
     return message?.toObject();
   }
 
+  async updateIsUpdated(messageId: string, isUpdated: boolean = true): Promise<void> {
+    const message = await this.messageModel.findByIdAndUpdate(messageId, { isUpdated }, { new: true });
+    if(!message) {
+      throw new Error("Message not found !");
+    }
+  }
+
   async updateOfferStatus(messageId: string, isAccepted: boolean): Promise<Message> {
     const message = await this.messageModel.findById(messageId);
     if(!message) {

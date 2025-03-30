@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import OfferDatabaseSchema from "./offer.database.schema";
 
 const MessageDatabaseSchema = new mongoose.Schema({
   content: {
@@ -29,9 +30,8 @@ const MessageDatabaseSchema = new mongoose.Schema({
     type: [String],
     required: true
   },
-  articleId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Article",
+  offer: {
+    type: OfferDatabaseSchema,
     required: false
   }
 }, { timestamps: true });

@@ -8,7 +8,7 @@ const MessageRequestSchema = joi.object<Message>({
   isOffer: joi.boolean().required(),
   userId: joi.string().hex().length(24).required(),
   conversationId: joi.string().hex().length(24).required(),
-  pictures: joi.array().items(joi.string().uri()).min(1).optional(),
+  pictures: joi.array().items(joi.string().uri()).optional(),
   offer: joi.object<Offer>().optional()
 });
 

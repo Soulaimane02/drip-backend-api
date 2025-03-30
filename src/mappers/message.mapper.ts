@@ -1,9 +1,9 @@
-import Mapper from "./mapper";
+import IMapper from "./mapper";
 import MessageRequestDTO from "../models/entities/message/dto/message.request.dto";
 import MessageResponseDTO from "../models/entities/message/dto/message.response.dto";
 import Message from "../models/entities/message/message";
 
-class MessageMapper implements Mapper<Message, MessageRequestDTO, MessageResponseDTO> {
+class MessageMapper implements IMapper<Message, MessageRequestDTO, MessageResponseDTO> {
   toEntity(dto: MessageRequestDTO): Message {
     return {
       id: "",

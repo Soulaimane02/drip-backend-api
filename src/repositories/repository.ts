@@ -1,4 +1,4 @@
-interface Repository<T> {
+interface IRepository<T> {
   getAll: () => Promise<T[]>;
   get: (id: string) => Promise<T>;
   add: (item: T) => Promise<T>;
@@ -6,4 +6,4 @@ interface Repository<T> {
   delete: (id: string) => Promise<void>;
 }
 
-export default Repository;
+export default IRepository;

@@ -1,9 +1,9 @@
-import Mapper from "./mapper";
+import IMapper from "./mapper";
 import Payment from "../models/entities/payment/payment";
 import PaymentRequestDTO from "../models/entities/payment/dto/payment.request.dto";
 import PaymentResponseDTO from "../models/entities/payment/dto/payment.response.dto";
 
-class PaymentMapper implements Mapper<Payment, PaymentRequestDTO, PaymentResponseDTO> {
+class PaymentMapper implements IMapper<Payment, PaymentRequestDTO, PaymentResponseDTO> {
   toEntity(dto: PaymentRequestDTO): Payment {
     return {
       id: "",

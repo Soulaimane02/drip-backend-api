@@ -1,9 +1,9 @@
-import Mapper from "./mapper";
+import IMapper from "./mapper";
 import User from "../models/entities/user/user";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import UserResponseDTO from "../models/entities/user/dto/user.response.dto";
 
-class UserMapper implements Mapper<User, UserRequestDTO, UserResponseDTO> {
+class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
   toEntity(dto: UserRequestDTO): User {
     return {
       id: "",

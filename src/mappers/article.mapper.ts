@@ -1,9 +1,9 @@
-import Mapper from "./mapper";
+import IMapper from "./mapper";
 import Article from "../models/entities/article/article";
 import ArticleRequestDTO from "../models/entities/article/dto/article.request.dto";
 import ArticleResponseDTO from "../models/entities/article/dto/article.response.dto";
 
-class ArticleMapper implements Mapper<Article, ArticleRequestDTO, ArticleResponseDTO> {
+class ArticleMapper implements IMapper<Article, ArticleRequestDTO, ArticleResponseDTO> {
   toEntity(dto: ArticleRequestDTO): Article {
     return {
       id: "",

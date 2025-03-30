@@ -1,7 +1,7 @@
-interface Mapper<Entity, RequestDTO, ResponseDTO> {
+interface IMapper<Entity, RequestDTO, ResponseDTO> {
   toEntity: (dto: RequestDTO) => Entity;
   toRequestDTO: (entity: Entity) => RequestDTO;
   toResponseDTO: (entity: Entity) => ResponseDTO;
 }
 
-export default Mapper;
+export default IMapper;

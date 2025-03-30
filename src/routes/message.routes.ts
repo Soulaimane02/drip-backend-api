@@ -8,6 +8,7 @@ const messageRoutes = (io: Server) => {
 
   router.get("/", messageController.getAllMessages.bind(messageController));
   router.get("/:id", messageController.getMessageById.bind(messageController));
+  router.get("/conversation/:id", messageController.getMessagesByConversationId.bind(messageController));
   router.post("/", messageController.sendMessage.bind(messageController));
   router.put("/:id", messageController.updateMessage.bind(messageController));
   router.put("/respond/:id", messageController.respondOffer.bind(messageController));

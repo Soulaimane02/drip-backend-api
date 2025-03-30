@@ -23,6 +23,11 @@ class MessageRepository implements Repository<Message> {
     }
     return message?.toObject();
   }
+
+  async getByConversationId(conversationId: string): Promise<Message[]> {
+    const messages = await this.messageModel.find({ conversationId });
+    return messages.map((message) => message.toObject());
+  }
   
   async add(messageToAdd: Message): Promise<Message> {
     const message = await new this.messageModel(messageToAdd).save();

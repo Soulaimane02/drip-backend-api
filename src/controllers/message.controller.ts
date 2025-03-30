@@ -43,6 +43,17 @@ class MessageController {
     }
   }
 
+  async getMessagesByConversationId(req: Request, res: Response) {
+    try {
+      const conversationId = req.params.id;
+      const messages = await this.messageService.getMessagesByConversationId(conversationId);
+      return res.status(200).json(messages);
+    }
+    catch(err: any) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
+
   async sendMessage(req: Request, res: Response) {
     try {
       if(req.files) {

@@ -28,6 +28,11 @@ class MessageService {
     return this.messageMapper.toResponseDTO(message);
   }
 
+  async getMessagesByConversationId(conversationId: string): Promise<MessageResponseDTO[]> {
+    const messages = await this.messageRepository.getByConversationId(conversationId);
+    return messages.map((message) => this.messageMapper.toResponseDTO(message));
+  }
+
   async createMessage(messageDto: MessageRequestDTO): Promise<MessageResponseDTO> {
     const message = this.messageMapper.toEntity(messageDto);
     const newMessage = await this.messageRepository.add(message);

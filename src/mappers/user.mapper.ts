@@ -1,4 +1,4 @@
-import Mapper from "../config/mapper";
+import Mapper from "./mapper";
 import User from "../models/entities/user/user";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import UserResponseDTO from "../models/entities/user/dto/user.response.dto";

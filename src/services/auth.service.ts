@@ -28,7 +28,6 @@ class AuthService {
     }
 
     const user = this.userMapper.toEntity(userDto);
-
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -38,7 +37,6 @@ class AuthService {
     };
 
     user.role = user.role || Role.User;
-    
     const userAdded = await this.userRepository.add(user);
 
     return jwt.sign({

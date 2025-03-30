@@ -1,4 +1,4 @@
-import Mapper from "../config/mapper";
+import Mapper from "./mapper";
 import MessageRequestDTO from "../models/entities/message/dto/message.request.dto";
 import MessageResponseDTO from "../models/entities/message/dto/message.response.dto";
 import Message from "../models/entities/message/message";

@@ -1,4 +1,4 @@
-import Mapper from "../config/mapper";
+import Mapper from "./mapper";
 import Category from "../models/entities/category/category";
 import CategoryRequestDTO from "../models/entities/category/dto/category.request.dto";
 import CategoryResponseDTO from "../models/entities/category/dto/category.response.dto";

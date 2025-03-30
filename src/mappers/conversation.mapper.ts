@@ -1,4 +1,4 @@
-import Mapper from "../config/mapper";
+import Mapper from "./mapper";
 import Conversation from "../models/entities/conversation/conversation";
 import ConversationRequestDTO from "../models/entities/conversation/dto/conversation.request.dto";
 import ConversationResponseDTO from "../models/entities/conversation/dto/conversation.response.dto";

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Repository from "../config/repository";
+import Repository from "./repository";
 import Message from "../models/entities/message/message";
 import MessageDatabaseSchema from "../schemas/database/message.database.schema";
 import OfferStatus from "../models/enums/offer.status";

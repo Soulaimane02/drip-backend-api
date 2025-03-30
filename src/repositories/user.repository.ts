@@ -1,4 +1,4 @@
-import Repository from "../config/repository";
+import Repository from "./repository";
 import User from "../models/entities/user/user";
 import mongoose from "mongoose";
 import UserDatabaseSchema from "../schemas/database/user.database.schema";

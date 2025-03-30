@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Repository from "../config/repository";
+import Repository from "./repository";
 import Article from "../models/entities/article/article";
 import ArticleDatabaseSchema from "../schemas/database/article.database.schema";
 

@@ -27,13 +27,13 @@ app.use(cors({
 middleware(app);
 connectDB();
 
-app.use("/uploads", uploadsRoutes);
-app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
-app.use("/articles", articleRoutes);
-app.use("/categories", categoryRoutes);
-app.use("/payments", paymentRoutes);
+app.use("/uploads", uploadsRoutes());
+app.use("/auth", authRoutes());
+app.use("/users", userRoutes());
+app.use("/articles", articleRoutes());
+app.use("/categories", categoryRoutes());
+app.use("/payments", paymentRoutes());
 app.use("/conversations", conversationRoutes());
 app.use("/messages", messageRoutes(io));
 
-export { app, server };
+export default server;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Repository from "../config/repository";
+import Repository from "./repository";
 import Payment from "../models/entities/payment/payment";
 import PaymentDatabaseSchema from "../schemas/database/payment.database.schema";
 

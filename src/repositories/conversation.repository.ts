@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Repository from "../config/repository";
+import Repository from "./repository";
 import Conversation from "../models/entities/conversation/conversation";
 import ConversationDatabaseSchema from "../schemas/database/conversation.database.schema";
 

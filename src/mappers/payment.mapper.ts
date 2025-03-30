@@ -1,4 +1,4 @@
-import Mapper from "../config/mapper";
+import Mapper from "./mapper";
 import Payment from "../models/entities/payment/payment";
 import PaymentRequestDTO from "../models/entities/payment/dto/payment.request.dto";
 import PaymentResponseDTO from "../models/entities/payment/dto/payment.response.dto";

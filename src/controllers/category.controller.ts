@@ -10,7 +10,7 @@ class CategoryController {
     this.categoryService = new CategoryService();
   }
 
-  async getAllCategory(req: Request, res: Response) {
+  async getAllCategories(req: Request, res: Response) {
     try {
       const categories = await this.categoryService.getAllCategories();
       return res.status(200).json(categories);

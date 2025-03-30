@@ -9,11 +9,15 @@ import userRoutes from "./routes/user.routes";
 import articleRoutes from "./routes/article.routes";
 import categoryRoutes from "./routes/category.routes";
 import paymentRoutes from "./routes/payment.routes";
+import conversationRoutes from "./routes/conversation.routes";
+import messageRoutes from "./routes/message.routes";
+import initSockets from "./config/sockets";
 
 dotenv.config();
 const IP_ADRESS = process.env.IP_ADRESS as string;
 
 const app = express();
+const { server, io } = initSockets(app);
 
 app.use(cors({
   origin: IP_ADRESS,
@@ -29,5 +33,7 @@ app.use("/users", userRoutes);
 app.use("/articles", articleRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/payments", paymentRoutes);
+app.use("/conversations", conversationRoutes());
+app.use("/messages", messageRoutes(io));
 
-export default app;
+export { app, server };

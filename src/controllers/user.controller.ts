@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import UserService from "../services/user.service";
 import UserRequestSchema from "../schemas/request/user.request.schema";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
@@ -15,34 +15,28 @@ class UserController {
     this.userService = new UserService();
   }
 
-  async getAllUsers(req: Request, res: Response) {
+  async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
       const users = await this.userService.getAllUsers();
       return res.status(200).json(users);
     }
-    catch(err: any) {
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async getUserById(req: Request, res: Response) {
+  async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const user = await this.userService.getUserById(id);
       return res.status(200).json(user);
     }
-    catch(err: any) {
-      if(err.message === "User not found !") {
-        return res.status(404).json({ error: "User not found" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async updateUser(req: Request, res: Response) {
+  async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const existingUser = await this.userService.getUserById(id);
@@ -61,31 +55,19 @@ class UserController {
       const updatedUser = await this.userService.updateUser(id, userDto);
       return res.status(201).json(updatedUser);
     }
-    catch(err: any) {
-      if(err.message === "User not found !") {
-        return res.status(404).json({ error: "User not found" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async deleteUser(req: Request, res: Response) { 
+  async deleteUser(req: Request, res: Response, next: NextFunction) { 
     try {
       const id = req.params.id;
       await this.userService.deleteUser(id);
       return res.status(200).json({ message: "User deleted successfully" });
     }
     catch(err: any) {
-      if(err.message === "User not found !") {
-        return res.status(404).json({ error: "User not found" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+      next(err);
     }
   }
 }

@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
 import { middleware } from "./config/middlewares";
+import { errorMiddleware } from "./middlewares/error.middlewares";
 import uploadsRoutes from "./routes/uploads.routes";
 import authRoutes from "./routes/auth.routes";
 import userRoutes from "./routes/user.routes";
@@ -35,5 +36,7 @@ app.use("/categories", categoryRoutes());
 app.use("/payments", paymentRoutes());
 app.use("/conversations", conversationRoutes());
 app.use("/messages", messageRoutes(io));
+
+app.use(errorMiddleware);
 
 export default server;

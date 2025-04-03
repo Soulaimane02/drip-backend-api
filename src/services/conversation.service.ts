@@ -1,4 +1,3 @@
-import { Server, Socket } from "socket.io";
 import ConversationMapper from "../mappers/conversation.mapper";
 import ConversationRequestDTO from "../models/entities/conversation/dto/conversation.request.dto";
 import ConversationResponseDTO from "../models/entities/conversation/dto/conversation.response.dto";

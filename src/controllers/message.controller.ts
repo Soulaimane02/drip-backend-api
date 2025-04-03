@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import MessageService from "../services/message.service";
 import MessageRequestSchema from "../schemas/request/message.request.schema";
 import { Server } from "socket.io";
@@ -16,45 +16,39 @@ class MessageController {
     this.messageService = new MessageService(io);
   }
 
-  async getAllMessages(req: Request, res: Response) {
+  async getAllMessages(req: Request, res: Response, next: NextFunction) {
     try {
       const messages = await this.messageService.getAllMessages();
       return res.status(200).json(messages);
     }
-    catch(err: any) {
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async getMessageById(req: Request, res: Response) {
+  async getMessageById(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const message = await this.messageService.getMessageById(id);
       return res.status(200).json(message);
     }
-    catch(err: any) {
-      if(err.message === "Message not found !") {
-        return res.status(404).json({ error: "Message not found" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async getMessagesByConversationId(req: Request, res: Response) {
+  async getMessagesByConversationId(req: Request, res: Response, next: NextFunction) {
     try {
       const conversationId = req.params.id;
       const messages = await this.messageService.getMessagesByConversationId(conversationId);
       return res.status(200).json(messages);
     }
-    catch(err: any) {
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async sendMessage(req: Request, res: Response) {
+  async sendMessage(req: Request, res: Response, next: NextFunction) {
     try {
       if(req.files) {
         req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/message-pictures/${file.filename}`);
@@ -69,12 +63,12 @@ class MessageController {
       const sentMessage = await this.messageService.createMessage(message);
       return res.status(201).json(sentMessage);
     }
-    catch(err: any) {
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async updateMessage(req: Request, res: Response) {
+  async updateMessage(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const existingMessage = await this.messageService.getMessageById(id);
@@ -93,52 +87,31 @@ class MessageController {
       const updatedMessage = await this.messageService.updateMessage(id, messageDto);
       return res.status(200).json(updatedMessage);
     }
-    catch(err: any) {
-      if(err.message === "Message not found !") {
-        return res.status(404).json({ error: "Message not found" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async respondOffer(req: Request, res: Response) {
+  async respondOffer(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const isAccepted = req.body.isAccepted;
       const updatedMessage = await this.messageService.respondOffer(id, isAccepted);
       return res.status(200).json(updatedMessage);
     }
-    catch(err: any) {
-      if(err.message === "Message not found !") {
-        return res.status(404).json({ error: "Message not found" });
-      }
-      else if(err.message === "No offer associated with this message !") {
-        return res.status(400).json({ error: "No offer associated with this message" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 
-  async deleteMessage(req: Request, res: Response) {
+  async deleteMessage(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       await this.messageService.deleteMessage(id);
       return res.status(200).json({ message: "Message deleted successfully" });
     }
-    catch(err: any) {
-      if(err.message === "Message not found !") {
-        return res.status(404).json({ error: "Message not found" });
-      }
-      else if(err.name === "CastError") {
-        return res.status(400).json({ error: "Invalid ID format" });
-      }
-      return res.status(500).json({ error: "Internal server error" });
+    catch(err) {
+      next(err);
     }
   }
 }

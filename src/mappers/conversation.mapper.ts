@@ -1,9 +1,9 @@
-import Mapper from "../config/mapper";
+import IMapper from "./mapper";
 import Conversation from "../models/entities/conversation/conversation";
 import ConversationRequestDTO from "../models/entities/conversation/dto/conversation.request.dto";
 import ConversationResponseDTO from "../models/entities/conversation/dto/conversation.response.dto";
 
-class ConversationMapper implements Mapper<Conversation, ConversationRequestDTO, ConversationResponseDTO> {
+class ConversationMapper implements IMapper<Conversation, ConversationRequestDTO, ConversationResponseDTO> {
   toEntity(dto: ConversationRequestDTO): Conversation {
     return {
       id: "",

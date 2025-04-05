@@ -28,6 +28,17 @@ class ReviewController {
       next(err);
     }
   }
+
+  async getReviewsByUserId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      const reviews = await this.reviewService.getReviewsByUserId(id);
+      return res.status(200).json(reviews);
+    }
+    catch(err) {
+      next(err);
+    }
+  }
 }
 
 export default ReviewController;

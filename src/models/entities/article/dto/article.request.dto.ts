@@ -9,6 +9,7 @@ interface ArticleRequestDTO {
   pictures: string[];
   condition: Condition;
   categories: string[];
+  userId: string;
   size?: Size;
   color?: Color;
 }

@@ -15,6 +15,7 @@ class ArticleMapper implements IMapper<Article, ArticleRequestDTO, ArticleRespon
       views: 0,
       condition: dto.condition,
       categories: dto.categories,
+      userId: dto.userId,
       size: dto.size,
       color: dto.color
     };
@@ -28,6 +29,7 @@ class ArticleMapper implements IMapper<Article, ArticleRequestDTO, ArticleRespon
       pictures: entity.pictures,
       condition: entity.condition,
       categories: entity.categories,
+      userId: entity.userId,
       size: entity.size,
       color: entity.color
     };
@@ -44,6 +46,7 @@ class ArticleMapper implements IMapper<Article, ArticleRequestDTO, ArticleRespon
       views: entity.views,
       condition: entity.condition,
       categories: entity.categories,
+      userId: entity.userId,
       size: entity.size,
       color: entity.color
     };

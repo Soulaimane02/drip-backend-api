@@ -7,6 +7,7 @@ const uploadsRoutes = () => {
   router.use("/profile-pictures", express.static(path.join(__dirname, "../../uploads/profile-pictures")));
   router.use("/article-pictures", express.static(path.join(__dirname, "../../uploads/article-pictures")));
   router.use("/message-pictures", express.static(path.join(__dirname, "../../uploads/message-pictures")));
+  router.use("/review-pictures", express.static(path.join(__dirname, "../../uploads/review-pictures")));
 
   return router;
 }

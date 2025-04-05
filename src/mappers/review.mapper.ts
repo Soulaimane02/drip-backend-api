@@ -11,7 +11,8 @@ class ReviewMapper implements IMapper<Review, ReviewRequestDTO, ReviewResponseDT
       comment: dto.comment,
       userId: dto.userId,
       articleId: dto.articleId,
-      createdAt: new Date()
+      createdAt: new Date(),
+      pictures: dto.pictures
     };
   }
 
@@ -21,6 +22,7 @@ class ReviewMapper implements IMapper<Review, ReviewRequestDTO, ReviewResponseDT
       comment: entity.comment,
       userId: entity.userId,
       articleId: entity.articleId,
+      pictures: entity.pictures
     };
   }
 
@@ -31,7 +33,8 @@ class ReviewMapper implements IMapper<Review, ReviewRequestDTO, ReviewResponseDT
       comment: entity.comment,
       userId: entity.userId,
       articleId: entity.articleId,
-      createdAt: entity.createdAt
+      createdAt: entity.createdAt,
+      pictures: entity.pictures
     };
   }
 }

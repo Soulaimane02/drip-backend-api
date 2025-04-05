@@ -5,6 +5,7 @@ interface ReviewResponseDTO {
   userId: string;
   articleId: string;
   createdAt: Date;
+  pictures?: string[];
 }
 
 export default ReviewResponseDTO;

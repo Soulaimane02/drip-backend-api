@@ -5,6 +5,7 @@ interface Review {
   userId: string;
   articleId: string;
   createdAt: Date;
+  pictures?: string[];
 }
 
 export default Review;

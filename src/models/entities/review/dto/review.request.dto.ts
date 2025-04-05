@@ -3,6 +3,7 @@ interface ReviewRequestDTO {
   comment: string;
   userId: string;
   articleId: string;
+  pictures?: string[];
 }
 
 export default ReviewRequestDTO;

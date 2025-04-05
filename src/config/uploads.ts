@@ -16,3 +16,4 @@ const getStorage = (filepath: string): multer.StorageEngine => {
 export const uploadUserConfig = multer({ storage: getStorage("../../uploads/profile-pictures") }).single("profilePicture");
 export const uploadArticleConfig = multer({ storage: getStorage("../../uploads/article-pictures") }).array("pictures", 5);
 export const uploadMessageConfig = multer({ storage: getStorage("../../uploads/message-pictures") }).array("pictures", 5);
+export const reviewMessageConfig = multer({ storage: getStorage("../../uploads/review-pictures") }).array("pictures", 5);

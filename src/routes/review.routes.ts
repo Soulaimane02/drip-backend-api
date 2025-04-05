@@ -6,6 +6,7 @@ const reviewRoutes = () => {
   const reviewController = new ReviewController();
 
   router.get("/", reviewController.getAllReviews.bind(reviewController));
+  router.get("/:id", reviewController.getReviewById.bind(reviewController));
 
   return router;
 }

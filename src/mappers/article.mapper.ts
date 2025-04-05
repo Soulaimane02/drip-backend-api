@@ -1,9 +1,9 @@
-import Mapper from "../config/mapper";
+import IMapper from "./mapper";
 import Article from "../models/entities/article/article";
 import ArticleRequestDTO from "../models/entities/article/dto/article.request.dto";
 import ArticleResponseDTO from "../models/entities/article/dto/article.response.dto";
 
-class ArticleMapper implements Mapper<Article, ArticleRequestDTO, ArticleResponseDTO> {
+class ArticleMapper implements IMapper<Article, ArticleRequestDTO, ArticleResponseDTO> {
   toEntity(dto: ArticleRequestDTO): Article {
     return {
       id: "",
@@ -15,6 +15,7 @@ class ArticleMapper implements Mapper<Article, ArticleRequestDTO, ArticleRespons
       views: 0,
       condition: dto.condition,
       categories: dto.categories,
+      userId: dto.userId,
       size: dto.size,
       color: dto.color
     };
@@ -28,6 +29,7 @@ class ArticleMapper implements Mapper<Article, ArticleRequestDTO, ArticleRespons
       pictures: entity.pictures,
       condition: entity.condition,
       categories: entity.categories,
+      userId: entity.userId,
       size: entity.size,
       color: entity.color
     };
@@ -44,6 +46,7 @@ class ArticleMapper implements Mapper<Article, ArticleRequestDTO, ArticleRespons
       views: entity.views,
       condition: entity.condition,
       categories: entity.categories,
+      userId: entity.userId,
       size: entity.size,
       color: entity.color
     };

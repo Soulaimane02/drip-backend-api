@@ -31,6 +31,7 @@ class CategoryService {
       if(!category.parent) {
         break;
       }
+      
       category = await this.categoryRepository.get(category.parent);
     }
   

@@ -7,8 +7,8 @@ export function deleteOldPicture(oldPictureUrl: string, pictureType: string): vo
   fs.existsSync(oldFilePath) && fs.unlinkSync(oldFilePath);
 }
 
-export function deleteOldPictures(oldPictures: string[], pictureType: string): void {
-  oldPictures.forEach((pictureUrl) => {
+export function deleteOldPictures(oldPicturesUrl: string[], pictureType: string): void {
+  oldPicturesUrl.forEach((pictureUrl) => {
     const fileName = pictureUrl.split("/").pop();
     const filePath = path.join(__dirname, `../../uploads/${pictureType}`, fileName!);
     fs.existsSync(filePath) && fs.unlinkSync(filePath);

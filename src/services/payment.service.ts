@@ -14,7 +14,7 @@ class PaymentService {
   private readonly paymentRepository: PaymentRepository;
   private readonly paymentMapper: PaymentMapper;
   private readonly articleRepository: ArticleRepository;
-  private readonly stripeService: Stripe
+  private readonly stripeService: Stripe;
 
   constructor() {
     this.paymentRepository = new PaymentRepository();
@@ -54,9 +54,11 @@ class PaymentService {
       });
 
       const payment: Payment = this.paymentMapper.toEntity(paymentDto);
+
       payment.stripeId = paymentIntent.id;
       payment.amount = paymentIntent.amount / 100;
       payment.description = paymentIntent.description!;
+      
       const savedPayment = await this.paymentRepository.add(payment);
       return this.paymentMapper.toResponseDTO(savedPayment);
     }

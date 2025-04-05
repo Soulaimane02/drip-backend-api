@@ -11,6 +11,8 @@ const reviewRoutes = () => {
   router.get("/article/:id", reviewController.getReviewsByArticleId.bind(reviewController));
   router.post("/", reviewController.addReview.bind(reviewController));
 
+  router.delete("/:id", reviewController.deleteReview.bind(reviewController));
+
   return router;
 }
 

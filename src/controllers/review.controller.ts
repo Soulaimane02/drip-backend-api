@@ -68,6 +68,17 @@ class ReviewController {
       next(err);
     }
   }
+
+  async deleteReview(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      await this.reviewService.deleteReview(id);
+      return res.status(200).json({ message: "Review deleted successfully" });
+    }
+    catch(err) {
+      next(err);
+    }
+  }
 }
 
 export default ReviewController;

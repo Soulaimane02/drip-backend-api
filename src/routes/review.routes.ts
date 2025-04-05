@@ -9,6 +9,7 @@ const reviewRoutes = () => {
   router.get("/:id", reviewController.getReviewById.bind(reviewController));
   router.get("/user/:id", reviewController.getReviewsByUserId.bind(reviewController));
   router.get("/article/:id", reviewController.getReviewsByArticleId.bind(reviewController));
+  router.post("/", reviewController.addReview.bind(reviewController));
 
   return router;
 }

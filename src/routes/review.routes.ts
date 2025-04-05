@@ -10,7 +10,7 @@ const reviewRoutes = () => {
   router.get("/user/:id", reviewController.getReviewsByUserId.bind(reviewController));
   router.get("/article/:id", reviewController.getReviewsByArticleId.bind(reviewController));
   router.post("/", reviewController.addReview.bind(reviewController));
-
+  router.put("/:id", reviewController.updateReview.bind(reviewController));
   router.delete("/:id", reviewController.deleteReview.bind(reviewController));
 
   return router;

@@ -69,6 +69,23 @@ class ReviewController {
     }
   }
 
+  async updateReview(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { error, value } = ReviewRequestSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const id = req.params.id;
+      const review: ReviewRequestDTO = value;
+      const updatedReview = await this.reviewService.updateReview(id, review);
+      return res.status(200).json(updatedReview);
+    }
+    catch(err) {
+      next(err);
+    }
+  }
+
   async deleteReview(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;

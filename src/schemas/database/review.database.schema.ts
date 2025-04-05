@@ -23,7 +23,7 @@ const ReviewDatabaseSchema = new mongoose.Schema({
     ref: "Article",
     required: true
   }
-});
+}, { timestamps: true });
 
 ReviewDatabaseSchema.virtual("id").get(function () {
   return this._id.toHexString();

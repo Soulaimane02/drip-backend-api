@@ -12,6 +12,7 @@ interface ArticleResponseDTO {
   views: number;
   condition: Condition;
   categories: string[];
+  userId: string;
   size?: Size;
   color?: Color;
 }

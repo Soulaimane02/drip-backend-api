@@ -17,7 +17,8 @@ class AuthController {
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       if(req.file) {
-        req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
+        const encodedFilename = encodeURIComponent(req.file.filename);
+        req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${encodedFilename}`;   
       }
 
       const { error, value } = UserRequestSchema.validate(req.body);
@@ -33,6 +34,7 @@ class AuthController {
       next(err);
     }
   }
+  
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {

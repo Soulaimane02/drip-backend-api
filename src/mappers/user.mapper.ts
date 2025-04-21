@@ -12,11 +12,16 @@ class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
       lastName: dto.lastName,
       rating: 0,
       profilePicture: dto.profilePicture,
-      password: {
-        hash: dto.password.hash,
-        salt: dto.password.salt
-      },
-      role: dto.role
+      password: dto.password
+        ? {
+            hash: dto.password.hash,
+            salt: dto.password.salt,
+          }
+        : {
+            hash: "",
+            salt: "",
+          }, // si pas de password, on met juste des champs vides
+      role: dto.role ?? "User", // fallback si role absent
     };
   }
 
@@ -27,7 +32,7 @@ class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
       lastName: entity.lastName,
       profilePicture: entity.profilePicture,
       password: entity.password,
-      role: entity.role
+      role: entity.role,
     };
   }
 
@@ -39,9 +44,10 @@ class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
       lastName: entity.lastName,
       rating: entity.rating,
       profilePicture: entity.profilePicture,
-      role: entity.role
+      role: entity.role,
     };
   }
 }
+
 
 export default UserMapper;

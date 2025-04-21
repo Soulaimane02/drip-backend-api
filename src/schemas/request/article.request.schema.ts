@@ -13,6 +13,7 @@ const ArticleRequestSchema = joi.object<Article>({
   views: joi.number().min(0).default(0).optional(),
   condition: joi.string().valid(...Object.values(Condition)).required(),
   categories: joi.array().items(joi.string().hex().length(24)).min(1).required(),
+  userId: joi.string().hex().length(24).required(),
   size: joi.string().valid(...Object.values(Size)).optional(),
   color: joi.string().valid(...Object.values(Color)).optional()
 });

@@ -4,18 +4,18 @@ import ArticleRequestDTO from "../models/entities/article/dto/article.request.dt
 import ArticleResponseDTO from "../models/entities/article/dto/article.response.dto";
 
 class ArticleMapper implements IMapper<Article, ArticleRequestDTO, ArticleResponseDTO> {
-  toEntity(dto: ArticleRequestDTO): Article {
+  toEntity(dto: ArticleRequestDTO | Partial<ArticleRequestDTO>): Article {
     return {
       id: "",
-      name: dto.name,
-      description: dto.description,
-      price: dto.price,
-      pictures: dto.pictures,
+      name: dto.name!,
+      description: dto.description!,
+      price: dto.price!,
+      pictures: dto.pictures!,
       likes: 0,
       views: 0,
-      condition: dto.condition,
-      categories: dto.categories,
-      userId: dto.userId,
+      condition: dto.condition!,
+      categories: dto.categories!,
+      userId: dto.userId!,
       size: dto.size,
       color: dto.color
     };

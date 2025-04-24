@@ -46,12 +46,7 @@ class UserController {
         req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
       }
 
-      const { error, value } = UserRequestSchema.validate(req.body);
-      if(error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
-
-      const userDto: UserRequestDTO = value;
+      const userDto: UserRequestDTO = req.body;
       const updatedUser = await this.userService.updateUser(id, userDto, req.body.password);
       return res.status(201).json(updatedUser);
     }

@@ -45,13 +45,13 @@ class MessageService {
     return messageResponse;
   }
 
-  async updateMessage(id: string, messageDto: MessageRequestDTO): Promise<MessageResponseDTO> {
+  async updateMessage(id: string, messageDto: Partial<MessageRequestDTO>): Promise<MessageResponseDTO> {
     const message = this.messageMapper.toEntity(messageDto);
     const updatedMessage = await this.messageRepository.put(id, message);
     const messageResponse = this.messageMapper.toResponseDTO(updatedMessage);
     await this.messageRepository.updateIsUpdated(id);
 
-    const conversation = await this.conversationRepository.get(messageDto.conversationId);
+    const conversation = await this.conversationRepository.get(messageDto.conversationId!);
     this.io.to(conversation.firstUserId).emit("messageUpdated", messageResponse);
     this.io.to(conversation.secondUserId).emit("messageUpdated", messageResponse);
 

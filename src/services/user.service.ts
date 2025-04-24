@@ -25,7 +25,7 @@ class UserService {
     return this.userMapper.toResponseDTO(user);
   }
 
-  async updateUser(id: string, userDto: UserRequestDTO, password: string): Promise<UserResponseDTO> {
+  async updateUser(id: string, userDto: Partial<UserRequestDTO>, password: string): Promise<UserResponseDTO> {
     const user = this.userMapper.toEntity(userDto);
 
     if(userDto.password) {

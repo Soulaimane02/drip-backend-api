@@ -51,7 +51,7 @@ class ReviewService {
     return this.reviewMapper.toResponseDTO(addedReview);
   }
 
-  async updateReview(id: string, reviewDto: ReviewRequestDTO): Promise<ReviewResponseDTO> {
+  async updateReview(id: string, reviewDto: Partial<ReviewRequestDTO>): Promise<ReviewResponseDTO> {
     const review = this.reviewMapper.toEntity(reviewDto);
     const updatedReview = await this.reviewRepository.put(id, review);
     return this.reviewMapper.toResponseDTO(updatedReview);

@@ -4,15 +4,15 @@ import MessageResponseDTO from "../models/entities/message/dto/message.response.
 import Message from "../models/entities/message/message";
 
 class MessageMapper implements IMapper<Message, MessageRequestDTO, MessageResponseDTO> {
-  toEntity(dto: MessageRequestDTO): Message {
+  toEntity(dto: MessageRequestDTO | Partial<MessageRequestDTO>): Message {
     return {
       id: "",
-      content: dto.content,
-      isUpdated: dto.isUpdated,
-      isOffer: dto.isOffer,
+      content: dto.content!,
+      isUpdated: dto.isUpdated!,
+      isOffer: dto.isOffer!,
       createdAt: new Date(),
-      userId: dto.userId,
-      conversationId: dto.conversationId,
+      userId: dto.userId!,
+      conversationId: dto.conversationId!,
       pictures: dto.pictures,
       offer: dto.offer
     }

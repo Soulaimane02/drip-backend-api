@@ -33,7 +33,7 @@ class ArticleService {
     return this.articleMapper.toResponseDTO(addedArticle);
   }
 
-  async updateArticle(id: string, articleDto: ArticleRequestDTO): Promise<ArticleResponseDTO> {
+  async updateArticle(id: string, articleDto: Partial<ArticleRequestDTO>): Promise<ArticleResponseDTO> {
     const article = this.articleMapper.toEntity(articleDto);
     const updatedArticle = await this.articleRepository.put(id, article);
     return this.articleMapper.toResponseDTO(updatedArticle);

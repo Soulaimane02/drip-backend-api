@@ -78,12 +78,7 @@ class MessageController {
         req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/message-pictures/${file.filename}`);
       }
 
-      const { error, value } = MessageRequestSchema.validate(req.body);
-      if (error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
-
-      const messageDto: MessageRequestDTO = value;
+      const messageDto: MessageRequestDTO = req.body;
       const updatedMessage = await this.messageService.updateMessage(id, messageDto);
       return res.status(200).json(updatedMessage);
     }

@@ -88,12 +88,7 @@ class ReviewController {
         req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/review-pictures/${file.filename}`);
       }
 
-      const { error, value } = ReviewRequestSchema.validate(req.body);
-      if(error) {
-        return res.status(400).json({ error: error.details[0].message });
-      }
-
-      const review: ReviewRequestDTO = value;
+      const review: ReviewRequestDTO = req.body;
       const updatedReview = await this.reviewService.updateReview(id, review);
       return res.status(200).json(updatedReview);
     }

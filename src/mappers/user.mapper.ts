@@ -4,24 +4,16 @@ import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import UserResponseDTO from "../models/entities/user/dto/user.response.dto";
 
 class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
-  toEntity(dto: UserRequestDTO): User {
+  toEntity(dto: UserRequestDTO | Partial<UserRequestDTO>): User {
     return {
       id: "",
-      email: dto.email,
-      firstName: dto.firstName,
-      lastName: dto.lastName,
+      email: dto.email!,
+      firstName: dto.firstName!,
+      lastName: dto.lastName!,
       rating: 0,
-      profilePicture: dto.profilePicture,
-      password: dto.password
-        ? {
-            hash: dto.password.hash,
-            salt: dto.password.salt,
-          }
-        : {
-            hash: "",
-            salt: "",
-          }, // si pas de password, on met juste des champs vides
-      role: dto.role ?? "User", // fallback si role absent
+      profilePicture: dto.profilePicture!,
+      password: dto.password!,
+      role: dto.role!
     };
   }
 
@@ -32,7 +24,7 @@ class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
       lastName: entity.lastName,
       profilePicture: entity.profilePicture,
       password: entity.password,
-      role: entity.role,
+      role: entity.role
     };
   }
 
@@ -44,10 +36,9 @@ class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
       lastName: entity.lastName,
       rating: entity.rating,
       profilePicture: entity.profilePicture,
-      role: entity.role,
+      role: entity.role
     };
   }
 }
-
 
 export default UserMapper;

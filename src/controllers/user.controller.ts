@@ -38,37 +38,22 @@ class UserController {
 
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-        const id = req.params.id;
-        console.log("Request Body:", req.body); // Affiche les données reçues pour diagnostic
+      const id = req.params.id;
+      const existingUser = await this.userService.getUserById(id);
 
-        // Récupérer l'utilisateur existant depuis la base de données
-        const existingUser = await this.userService.getUserById(id);
-        if (!existingUser) {
-            return res.status(404).json({ error: "User not found" });
-        }
+      if(req.file) {
+        deleteOldPicture(existingUser.profilePicture, "profile-pictures");
+        req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
+      }
 
-        // Gérer l'upload de l'image si nécessaire
-        if (req.file) {
-            deleteOldPicture(existingUser.profilePicture, "profile-pictures");
-            req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
-        }
-
-        // Ne pas inclure de mot de passe ou autre logique qui pourrait poser problème
-        const { password, ...updatedData } = req.body;
-
-        // Effectuer la mise à jour de l'utilisateur
-        const updatedUser = await this.userService.updateUser(id, updatedData);
-
-        return res.status(200).json(updatedUser); // Retourner la réponse avec l'utilisateur mis à jour
-    } catch (err) {
-        console.error("Error during update:", err);
-        return res.status(500).json({ error: 'Internal Server Error' });
+      const userDto: UserRequestDTO = req.body;
+      const updatedUser = await this.userService.updateUser(id, userDto, req.body.password);
+      return res.status(201).json(updatedUser);
     }
-}
-
-
-
-
+    catch(err) {
+      next(err);
+    }
+  }
 
   async deleteUser(req: Request, res: Response, next: NextFunction) { 
     try {

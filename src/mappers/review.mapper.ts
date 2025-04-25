@@ -4,13 +4,13 @@ import Review from "../models/entities/review/review";
 import IMapper from "./mapper";
 
 class ReviewMapper implements IMapper<Review, ReviewRequestDTO, ReviewResponseDTO> {
-  toEntity(dto: ReviewRequestDTO): Review {
+  toEntity(dto: ReviewRequestDTO | Partial<ReviewRequestDTO>): Review {
     return {
       id: "",
-      rating: dto.rating,
-      comment: dto.comment,
-      userId: dto.userId,
-      articleId: dto.articleId,
+      rating: dto.rating!,
+      comment: dto.comment!,
+      userId: dto.userId!,
+      articleId: dto.articleId!,
       createdAt: new Date(),
       pictures: dto.pictures
     };

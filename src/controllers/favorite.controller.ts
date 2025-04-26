@@ -46,6 +46,17 @@ class FavoriteController {
       next(err);
     }
   }
+
+  async deleteFavorite(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      await this.favoriteService.deleteFavorite(id);
+      return res.status(200).json({ message: "Favorite deleted successfully" });
+    }
+    catch(err) {
+      next(err);
+    }
+  }
 }
 
 export default FavoriteController;

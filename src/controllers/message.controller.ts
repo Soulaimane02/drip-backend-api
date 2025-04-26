@@ -78,8 +78,9 @@ class MessageController {
         req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/message-pictures/${file.filename}`);
       }
 
-      const { error, value } = MessageRequestSchema.validate(req.body);
-      if (error) {
+      const schema = MessageRequestSchema.fork(Object.keys(MessageRequestSchema.describe().keys), (schema) => schema.optional());
+      const { error, value } = schema.validate(req.body);
+      if(error) {
         return res.status(400).json({ error: error.details[0].message });
       }
 

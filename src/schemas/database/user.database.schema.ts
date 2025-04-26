@@ -36,6 +36,14 @@ const UserDatabaseSchema = new mongoose.Schema({
     type: String,
     enum: Object.values(Role),
     required: true
+  },
+  stripeId: {
+    type: String,
+    required: false
+  },
+  stripeBankAccountId: {
+    type: String,
+    required: false
   }
 });
 

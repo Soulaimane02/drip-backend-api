@@ -4,19 +4,16 @@ import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import UserResponseDTO from "../models/entities/user/dto/user.response.dto";
 
 class UserMapper implements IMapper<User, UserRequestDTO, UserResponseDTO> {
-  toEntity(dto: UserRequestDTO): User {
+  toEntity(dto: UserRequestDTO | Partial<UserRequestDTO>): User {
     return {
       id: "",
-      email: dto.email,
-      firstName: dto.firstName,
-      lastName: dto.lastName,
+      email: dto.email!,
+      firstName: dto.firstName!,
+      lastName: dto.lastName!,
       rating: 0,
-      profilePicture: dto.profilePicture,
-      password: {
-        hash: dto.password.hash,
-        salt: dto.password.salt
-      },
-      role: dto.role
+      profilePicture: dto.profilePicture!,
+      password: dto.password!,
+      role: dto.role!
     };
   }
 

@@ -88,7 +88,8 @@ class ReviewController {
         req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/review-pictures/${file.filename}`);
       }
 
-      const { error, value } = ReviewRequestSchema.validate(req.body);
+      const schema = ReviewRequestSchema.fork(Object.keys(ReviewRequestSchema.describe().keys), (schema) => schema.optional());
+      const { error, value } = schema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });
       }

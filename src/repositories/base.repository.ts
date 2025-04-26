@@ -16,7 +16,7 @@ abstract class BaseRepository<T> implements IRepository<T> {
   async get(id: string): Promise<T> {
     const item = await this.model.findById(id);
     if(!item) {
-      throw new Error(`Not found`);
+      throw new Error("Not found");
     }
     return item.toObject() as T;
   }
@@ -26,10 +26,10 @@ abstract class BaseRepository<T> implements IRepository<T> {
     return created.toObject() as T;
   }
 
-  async put(id: string, data: T): Promise<T> {
+  async put(id: string, data: Partial<T>): Promise<T> {
     const updated = await this.model.findByIdAndUpdate(id, data as UpdateQuery<T>, { new: true });
     if(!updated) {
-      throw new Error(`Not found`);
+      throw new Error("Not found");
     }
     return updated.toObject() as T;
   }
@@ -37,7 +37,7 @@ abstract class BaseRepository<T> implements IRepository<T> {
   async delete(id: string): Promise<void> {
     const deleted = await this.model.findByIdAndDelete(id);
     if(!deleted) {
-      throw new Error(`Not found`);
+      throw new Error("Not found");
     }
   }
 }

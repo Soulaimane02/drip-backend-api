@@ -4,6 +4,8 @@ import UserRequestSchema from "../schemas/request/user.request.schema";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import dotenv from "dotenv";
 import { deleteOldPicture } from "../utils/files";
+import SellerInfoRequestSchema from "../schemas/request/seller.request.schema";
+import SellerInfo from "../models/entities/seller/seller.info";
 
 dotenv.config();
 const BASE_URL = process.env.BASE_URL as string;
@@ -36,6 +38,23 @@ class UserController {
     }
   }
 
+  async becomeSeller(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { error, value } = SellerInfoRequestSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const id = req.params.id;
+      const sellerInfo: SellerInfo = value;
+      const user = await this.userService.becomeSeller(id, sellerInfo);
+      return res.status(200).json(user);
+    }
+    catch(err) {
+      next(err);
+    }
+  }
+
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
@@ -46,13 +65,14 @@ class UserController {
         req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
       }
 
-      const { error, value } = UserRequestSchema.validate(req.body);
+      const schema = UserRequestSchema.fork(Object.keys(UserRequestSchema.describe().keys), (schema) => schema.optional());
+      const { error, value } = schema.validate(req.body);
       if(error) {
         return res.status(400).json({ error: error.details[0].message });
       }
 
       const userDto: UserRequestDTO = value;
-      const updatedUser = await this.userService.updateUser(id, userDto);
+      const updatedUser = await this.userService.updateUser(id, userDto, req.body.password);
       return res.status(201).json(updatedUser);
     }
     catch(err) {

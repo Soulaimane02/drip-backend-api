@@ -13,6 +13,7 @@ import paymentRoutes from "./routes/payment.routes";
 import conversationRoutes from "./routes/conversation.routes";
 import messageRoutes from "./routes/message.routes";
 import reviewRoutes from "./routes/review.routes";
+import favoriteRoutes from "./routes/favorite.routes";
 import initSockets from "./config/sockets";
 
 dotenv.config();
@@ -38,6 +39,7 @@ app.use("/payments", paymentRoutes());
 app.use("/conversations", conversationRoutes());
 app.use("/messages", messageRoutes(io));
 app.use("/reviews", reviewRoutes());
+app.use("/favorites", favoriteRoutes());
 
 app.use(errorMiddleware);
 

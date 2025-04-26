@@ -20,10 +20,21 @@ class FavoriteController {
     }
   }
 
-  async getFavoriteByUserId(req: Request, res: Response, next: NextFunction) {
+  async getFavoritesByUserId(req: Request, res: Response, next: NextFunction) {
     try {
       const id = req.params.id;
       const favorite = await this.favoriteService.getByUserId(id);
+      return res.status(200).json(favorite);
+    }
+    catch(err) {
+      next(err);
+    }
+  }
+
+  async getFavoritesByArticleId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      const favorite = await this.favoriteService.getByArticleId(id);
       return res.status(200).json(favorite);
     }
     catch(err) {

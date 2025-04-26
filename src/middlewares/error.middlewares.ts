@@ -25,6 +25,15 @@ export const errorMiddleware = (err: Error, req: Request, res: Response, next: N
   if(err.message === "Favorite already exists") {
     return res.status(409).json({ error: "This article is already in your favorites" });
   }
+  if(err.message === "User is already a seller") {
+    return res.status(409).json({ error: "User is already a seller" });
+  }
+  if(err.message.includes("Stripe error")) {
+    return res.status(500).json({ error: `Stripe error: ${err.message}` });
+  }
+  if(err.message.includes("Invalid IBAN")) {
+    return res.status(400).json({ error: "The IBAN is invalid or unsupported" });
+  }
   if(err.message.includes("card_declined")) {
     return res.status(402).json({ error: "Your card was declined. Please try another payment method." });
   }

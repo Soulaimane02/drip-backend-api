@@ -8,6 +8,7 @@ interface UserResponseDTO {
   rating: number;
   profilePicture: string;
   role: Role;
+  stripeId?: string;
 }
 
 export default UserResponseDTO;

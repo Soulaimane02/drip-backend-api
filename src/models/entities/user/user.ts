@@ -10,6 +10,8 @@ interface User {
   profilePicture: string;
   password: Password;
   role: Role;
+  stripeId?: string;
+  stripeBankAccountId?: string;
 }
 
 export default User;

@@ -8,6 +8,9 @@ interface SellerInfo {
   phone: string;
   dob: DOB;
   address: Address;
+  ipAddress: string;
+  iban: string;
+  titularName: string;
 }
 
 export default SellerInfo;

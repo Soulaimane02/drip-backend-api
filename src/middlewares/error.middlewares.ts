@@ -22,6 +22,9 @@ export const errorMiddleware = (err: Error, req: Request, res: Response, next: N
   if(err.message === "No offer associated with this message !") {
     return res.status(400).json({ error: "No offer associated with this message" });
   }
+  if(err.message === "Favorite already exists") {
+    return res.status(409).json({ error: "This article is already in your favorites" });
+  }
   if(err.message.includes("card_declined")) {
     return res.status(402).json({ error: "Your card was declined. Please try another payment method." });
   }

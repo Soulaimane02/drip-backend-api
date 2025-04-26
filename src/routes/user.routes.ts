@@ -8,6 +8,7 @@ const userRoutes = () => {
 
   router.get("/", userController.getAllUsers.bind(userController));
   router.get("/:id", userController.getUserById.bind(userController));
+  router.post("/become-seller/:id", userController.becomeSeller.bind(userController));
   router.put("/:id", uploadUserConfig, userController.updateUser.bind(userController));
   router.delete("/:id", userController.deleteUser.bind(userController));
 

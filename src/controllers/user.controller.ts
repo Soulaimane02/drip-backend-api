@@ -4,6 +4,8 @@ import UserRequestSchema from "../schemas/request/user.request.schema";
 import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import dotenv from "dotenv";
 import { deleteOldPicture } from "../utils/files";
+import SellerInfoRequestSchema from "../schemas/request/seller.request.schema";
+import SellerInfo from "../models/entities/seller/seller.info";
 
 dotenv.config();
 const BASE_URL = process.env.BASE_URL as string;
@@ -29,6 +31,23 @@ class UserController {
     try {
       const id = req.params.id;
       const user = await this.userService.getUserById(id);
+      return res.status(200).json(user);
+    }
+    catch(err) {
+      next(err);
+    }
+  }
+
+  async becomeSeller(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { error, value } = SellerInfoRequestSchema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const id = req.params.id;
+      const sellerInfo: SellerInfo = value;
+      const user = await this.userService.becomeSeller(id, sellerInfo);
       return res.status(200).json(user);
     }
     catch(err) {

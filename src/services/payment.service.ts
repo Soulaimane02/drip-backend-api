@@ -4,8 +4,10 @@ import PaymentRequestDTO from "../models/entities/payment/dto/payment.request.dt
 import PaymentResponseDTO from "../models/entities/payment/dto/payment.response.dto";
 import ArticleRepository from "../repositories/article.repository";
 import PaymentMapper from "../mappers/payment.mapper";
+import UserRepository from "../repositories/user.repository";
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import Role from "../models/enums/role";
 
 dotenv.config();
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY as string;
@@ -14,12 +16,14 @@ class PaymentService {
   private readonly paymentRepository: PaymentRepository;
   private readonly paymentMapper: PaymentMapper;
   private readonly articleRepository: ArticleRepository;
+  private readonly userRepository: UserRepository;
   private readonly stripeService: Stripe;
 
   constructor() {
     this.paymentRepository = new PaymentRepository();
     this.paymentMapper = new PaymentMapper();
     this.articleRepository = new ArticleRepository();
+    this.userRepository = new UserRepository();
     this.stripeService = new Stripe(STRIPE_API_KEY);
   }
 
@@ -46,11 +50,19 @@ class PaymentService {
   async createPayment(paymentDto: PaymentRequestDTO): Promise<PaymentResponseDTO> {
     try {
       const article = await this.articleRepository.get(paymentDto.articleId);
+      const seller = await this.userRepository.get(article.userId);
+
+      if(!seller.stripeId || seller.role !== Role.Seller) {
+        throw new Error("User is not a seller");
+      }
 
       const paymentIntent = await this.stripeService.paymentIntents.create({
         amount: article.price * 100,
         currency: "eur",
         description: `Payment for article ${paymentDto.articleId} by user ${paymentDto.userId}`,
+        transfer_data: {
+          destination: seller.stripeId,
+        },
       });
 
       const payment: Payment = this.paymentMapper.toEntity(paymentDto);

@@ -35,60 +35,69 @@ class UserService {
   }
 
   async becomeSeller(id: string, sellerInfo: SellerInfo): Promise<UserResponseDTO> {
-    const user = await this.userRepository.get(id);
-    if(user.role === Role.Seller) {
-      throw new Error("User is already a seller");
-    }
+    try {
+      const user = await this.userRepository.get(id);
+      if(user.role === Role.Seller) {
+        throw new Error("User is already a seller");
+      }
 
-    const account = await this.stripeService.accounts.create({
-      type: "express",
-      country: "FR",
-      email: sellerInfo.email,
-      capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true },
-      },
-      business_type: "individual",
-      individual: {
-        first_name: sellerInfo.firstName,
-        last_name: sellerInfo.lastName,
-        email: sellerInfo.email,
-        phone: sellerInfo.phone,
-        dob: {
-          day: sellerInfo.dob.day,
-          month: sellerInfo.dob.month,
-          year: sellerInfo.dob.year,
-        },
-        address: {
-          line1: sellerInfo.address.line1,
-          city: sellerInfo.address.city,
-          postal_code: sellerInfo.address.postalCode,
-          state: sellerInfo.address.state,
-          country: sellerInfo.address.country,
-        },
-      },
-      tos_acceptance: {
-        date: Math.floor(Date.now() / 1000),
-        ip: sellerInfo.ipAddress,
-      },
-    });
-
-    const externalAccount = await this.stripeService.accounts.createExternalAccount(account.id, {
-      external_account: {
-        object: "bank_account",
+      const account = await this.stripeService.accounts.create({
+        type: "express",
         country: "FR",
-        currency: "eur",
-        account_holder_name: sellerInfo.titularName,
-        account_holder_type: "individual",
-        account_number: sellerInfo.iban,
-      },
-    });
+        email: sellerInfo.email,
+        capabilities: {
+          card_payments: { requested: true },
+          transfers: { requested: true },
+        },
+        business_type: "individual",
+        individual: {
+          first_name: sellerInfo.firstName,
+          last_name: sellerInfo.lastName,
+          email: sellerInfo.email,
+          phone: sellerInfo.phone,
+          dob: {
+            day: sellerInfo.dob.day,
+            month: sellerInfo.dob.month,
+            year: sellerInfo.dob.year,
+          },
+          address: {
+            line1: sellerInfo.address.line1,
+            city: sellerInfo.address.city,
+            postal_code: sellerInfo.address.postalCode,
+            state: sellerInfo.address.state,
+            country: sellerInfo.address.country,
+          },
+        },
+        tos_acceptance: {
+          date: Math.floor(Date.now() / 1000),
+          ip: sellerInfo.ipAddress,
+        },
+      });
 
-    user.role = Role.Seller;
-    user.stripeId = account.id;
-    user.stripeBankAccountId = externalAccount.id;
-    const updatedUser = await this.userRepository.put(id, user);
-    return this.userMapper.toResponseDTO(updatedUser);
+      const externalAccount = await this.stripeService.accounts.createExternalAccount(account.id, {
+        external_account: {
+          object: "bank_account",
+          country: "FR",
+          currency: "eur",
+          account_holder_name: sellerInfo.titularName,
+          account_holder_type: "individual",
+          account_number: sellerInfo.iban,
+        },
+      });
+
+      user.role = Role.Seller;
+      user.stripeId = account.id;
+      user.stripeBankAccountId = externalAccount.id;
+      const updatedUser = await this.userRepository.put(id, user);
+      return this.userMapper.toResponseDTO(updatedUser);
+    }
+    catch(err) {
+      if(err instanceof Stripe.errors.StripeError) {
+        throw new Error(`Stripe seller error: ${err.message}`);
+      }
+
+      throw new Error("Unexpected become seller error");
+    }
   }
 
   async updateUser(id: string, userDto: Partial<UserRequestDTO>, password: string): Promise<UserResponseDTO> {

@@ -28,26 +28,23 @@ export const errorMiddleware = (err: Error, req: Request, res: Response, next: N
   if(err.message === "User is already a seller") {
     return res.status(409).json({ error: "User is already a seller" });
   }
-  if(err.message.includes("Stripe error")) {
+  if(err.message  === "Unexpected become seller error") {
+    return res.status(500).json({ error: "Unexpected error occurred while becoming a seller" });
+  }
+  if(err.message === "User is not a seller") {
+    return res.status(409).json({ error: "User is not a seller" });
+  }
+  if(err.message.includes("Stripe seller error")) {
     return res.status(500).json({ error: `Stripe error: ${err.message}` });
   }
   if(err.message.includes("Invalid IBAN")) {
     return res.status(400).json({ error: "The IBAN is invalid or unsupported" });
   }
-  if(err.message.includes("card_declined")) {
-    return res.status(402).json({ error: "Your card was declined. Please try another payment method." });
+  if(err.message.includes("Stripe payment error")) {
+    return res.status(500).json({ error: `Stripe error: ${err.message}` });
   }
-  if(err.message.includes("insufficient_funds")) {
-    return res.status(402).json({ error: "Insufficient funds. Please check your balance." });
-  }
-  if(err.message.includes("incorrect_cvc")) {
-    return res.status(400).json({ error: "Incorrect security code. Please try again." });
-  }
-  if(err.message.includes("expired_card")) {
-    return res.status(400).json({ error: "Your card has expired. Please use another card." });
-  }
-  if(err.message.includes("processing_error")) {
-    return res.status(500).json({ error: "Payment processing error. Please try again later." });
+  if(err.message === "Unexpected payment error") {
+    return res.status(500).json({ error: "Unexpected error occurred while processing the payment" });
   }
   return res.status(500).json({ error: "Internal server error" });
 }

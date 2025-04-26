@@ -1,4 +1,4 @@
-interface Adress {
+interface Address {
   line1: string;
   city: string;
   postalCode: string;
@@ -6,4 +6,4 @@ interface Adress {
   country: string;
 }
 
-export default Adress;
+export default Address;

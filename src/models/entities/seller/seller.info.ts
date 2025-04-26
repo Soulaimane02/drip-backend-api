@@ -1,4 +1,4 @@
-import Adress from "./adress";
+import Address from "./address";
 import DOB from "./dob";
 
 interface SellerInfo {
@@ -7,7 +7,7 @@ interface SellerInfo {
   lastName: string;
   phone: string;
   dob: DOB;
-  address: Adress;
+  address: Address;
 }
 
 export default SellerInfo;

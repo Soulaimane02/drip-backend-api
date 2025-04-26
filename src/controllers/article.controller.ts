@@ -97,7 +97,13 @@ class ArticleController {
         req.body.pictures = (req.files as Express.Multer.File[]).map((file) => `${BASE_URL}/uploads/article-pictures/${file.filename}`);
       }
 
-      const articleDto: ArticleRequestDTO = req.body;
+      const schema = ArticleRequestSchema.fork(Object.keys(ArticleRequestSchema.describe().keys), (schema) => schema.optional());
+      const { error, value } = schema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const articleDto: ArticleRequestDTO = value;
       const updatedArticle = await this.articleService.updateArticle(id, articleDto);
       return res.status(201).json(updatedArticle);
     }

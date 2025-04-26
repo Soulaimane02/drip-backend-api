@@ -46,7 +46,13 @@ class UserController {
         req.body.profilePicture = `${BASE_URL}/uploads/profile-pictures/${req.file.filename}`;
       }
 
-      const userDto: UserRequestDTO = req.body;
+      const schema = UserRequestSchema.fork(Object.keys(UserRequestSchema.describe().keys), (schema) => schema.optional());
+      const { error, value } = schema.validate(req.body);
+      if(error) {
+        return res.status(400).json({ error: error.details[0].message });
+      }
+
+      const userDto: UserRequestDTO = value;
       const updatedUser = await this.userService.updateUser(id, userDto, req.body.password);
       return res.status(201).json(updatedUser);
     }

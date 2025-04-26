@@ -17,6 +17,17 @@ class FavoriteController {
       next(err);
     }
   }
+
+  async getFavoriteByUserId(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id;
+      const favorite = await this.favoriteService.getByUserId(id);
+      return res.status(200).json(favorite);
+    }
+    catch(err) {
+      next(err);
+    }
+  }
 }
 
 export default FavoriteController;

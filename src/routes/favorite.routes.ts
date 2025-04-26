@@ -6,6 +6,7 @@ const favoriteRoutes = () => {
   const favoriteController = new FavoriteController();
 
   router.get("/", favoriteController.getAllFavorites.bind(favoriteController));
+  router.get("/user/:id", favoriteController.getFavoriteByUserId.bind(favoriteController));
 
   return router;
 }

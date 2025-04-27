@@ -1,19 +1,20 @@
 import express from "express";
 import MessageController from "../controllers/message.controller";
 import { Server } from "socket.io";
-import { isSignedInMiddleware } from "../middlewares/base.middlewares";
+import { authorisationMiddleware, isSignedInMiddleware } from "../middlewares/base.middlewares";
+import Role from "../models/enums/role";
 
 const messageRoutes = (io: Server) => {
   const router = express.Router();
   const messageController = new MessageController(io);
 
-  router.get("/", isSignedInMiddleware(), messageController.getAllMessages.bind(messageController));
-  router.get("/:id", isSignedInMiddleware(), messageController.getMessageById.bind(messageController));
-  router.get("/conversation/:id", isSignedInMiddleware(), messageController.getMessagesByConversationId.bind(messageController));
-  router.post("/", isSignedInMiddleware(), messageController.sendMessage.bind(messageController));
-  router.put("/:id", isSignedInMiddleware(), messageController.updateMessage.bind(messageController));
-  router.put("/respond/:id", isSignedInMiddleware(), messageController.respondOffer.bind(messageController));
-  router.delete("/:id", isSignedInMiddleware(), messageController.deleteMessage.bind(messageController));
+  router.get("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin]), messageController.getAllMessages.bind(messageController));
+  router.get("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), messageController.getMessageById.bind(messageController));
+  router.get("/conversation/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), messageController.getMessagesByConversationId.bind(messageController));
+  router.post("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), messageController.sendMessage.bind(messageController));
+  router.put("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), messageController.updateMessage.bind(messageController));
+  router.put("/respond/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), messageController.respondOffer.bind(messageController));
+  router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), messageController.deleteMessage.bind(messageController));
 
   return router;
 };

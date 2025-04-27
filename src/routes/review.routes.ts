@@ -1,18 +1,19 @@
 import express from "express";
 import ReviewController from "../controllers/review.controller";
-import { isSignedInMiddleware } from "../middlewares/base.middlewares";
+import { authorisationMiddleware, isSignedInMiddleware } from "../middlewares/base.middlewares";
+import Role from "../models/enums/role";
 
 const reviewRoutes = () => {
   const router = express.Router();
   const reviewController = new ReviewController();
 
-  router.get("/", isSignedInMiddleware(), reviewController.getAllReviews.bind(reviewController));
-  router.get("/:id", reviewController.getReviewById.bind(reviewController));
-  router.get("/user/:id", reviewController.getReviewsByUserId.bind(reviewController));
-  router.get("/article/:id", reviewController.getReviewsByArticleId.bind(reviewController));
-  router.post("/", isSignedInMiddleware(), reviewController.addReview.bind(reviewController));
-  router.put("/:id", isSignedInMiddleware(), reviewController.updateReview.bind(reviewController));
-  router.delete("/:id", isSignedInMiddleware(), reviewController.deleteReview.bind(reviewController));
+  router.get("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin]), reviewController.getAllReviews.bind(reviewController));
+  router.get("/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.getReviewById.bind(reviewController));
+  router.get("/user/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.getReviewsByUserId.bind(reviewController));
+  router.get("/article/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.getReviewsByArticleId.bind(reviewController));
+  router.post("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.addReview.bind(reviewController));
+  router.put("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.updateReview.bind(reviewController));
+  router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.deleteReview.bind(reviewController));
 
   return router;
 }

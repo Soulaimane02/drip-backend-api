@@ -47,7 +47,7 @@ class PaymentService {
     return payments.map((payment) => this.paymentMapper.toResponseDTO(payment));
   }
 
-  async createPayment(paymentDto: PaymentRequestDTO): Promise<PaymentResponseDTO> {
+  async createPayment(token: string, paymentDto: PaymentRequestDTO): Promise<PaymentResponseDTO> {
     try {
       const article = await this.articleRepository.get(paymentDto.articleId);
       const seller = await this.userRepository.get(article.userId);
@@ -60,6 +60,9 @@ class PaymentService {
         amount: article.price * 100,
         currency: "eur",
         description: `Payment for article ${paymentDto.articleId} by user ${paymentDto.userId}`,
+        payment_method: token,
+        confirm: true,
+        on_behalf_of: seller.stripeId,
         transfer_data: {
           destination: seller.stripeId,
         },
@@ -76,7 +79,7 @@ class PaymentService {
     }
     catch(err: any) {
       if(err instanceof Stripe.errors.StripeError) {
-        throw new Error(err.message);
+        throw new Error(`Stripe payment error: ${err.message}`);
       }
       throw new Error("Unexpected payment error");
     }

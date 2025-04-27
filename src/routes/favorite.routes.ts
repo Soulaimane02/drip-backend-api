@@ -1,15 +1,16 @@
 import express from "express";
 import FavoriteController from "../controllers/favorite.controller";
+import { isSignedInMiddleware } from "../middlewares/base.middlewares";
 
 const favoriteRoutes = () => {
   const router = express.Router();
   const favoriteController = new FavoriteController();
 
-  router.get("/", favoriteController.getAllFavorites.bind(favoriteController));
-  router.get("/user/:id", favoriteController.getFavoritesByUserId.bind(favoriteController));
-  router.get("/article/:id", favoriteController.getFavoritesByArticleId.bind(favoriteController));
-  router.post("/", favoriteController.addFavorite.bind(favoriteController));
-  router.delete("/:id", favoriteController.deleteFavorite.bind(favoriteController));
+  router.get("/", isSignedInMiddleware(), favoriteController.getAllFavorites.bind(favoriteController));
+  router.get("/user/:id", isSignedInMiddleware(), favoriteController.getFavoritesByUserId.bind(favoriteController));
+  router.get("/article/:id", isSignedInMiddleware(), favoriteController.getFavoritesByArticleId.bind(favoriteController));
+  router.post("/", isSignedInMiddleware(), favoriteController.addFavorite.bind(favoriteController));
+  router.delete("/:id", isSignedInMiddleware(), favoriteController.deleteFavorite.bind(favoriteController));
 
   return router;
 }

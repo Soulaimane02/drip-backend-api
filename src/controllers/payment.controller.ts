@@ -61,7 +61,12 @@ class PaymentController {
       }
 
       const payment: PaymentRequestDTO = value;
-      const savedPayment = await this.paymentService.createPayment(payment);
+      const token = req.body.token;
+      if(!token) {
+        return res.status(400).json({ error: "Token is required" });
+      }
+      
+      const savedPayment = await this.paymentService.createPayment(token, payment);
       return res.status(200).json(savedPayment);
     }
     catch(err: any) {

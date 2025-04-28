@@ -23,3 +23,23 @@ export const verifyConversationOwnershipMiddleware = () => {
     }
   };
 };
+
+export const verifyConversationOwnershipFromBodyMiddleware = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const user = await getUserByToken(token as string);
+      const firstUserId = req.body.firstUserId;
+      const secondUserId = req.body.secondUserId;
+
+      if(firstUserId !== user.id && secondUserId !== user.id) {
+        return res.status(403).json({ error: "You do not have permission to start this conversation" });
+      }
+
+      next();
+    }
+    catch(err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+};

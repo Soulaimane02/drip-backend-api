@@ -8,8 +8,8 @@ const userRoutes = () => {
   const router = express.Router();
   const userController = new UserController();
 
-  router.get("/", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), userController.getAllUsers.bind(userController));
-  router.get("/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), userController.getUserById.bind(userController));
+  router.get("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), userController.getAllUsers.bind(userController));
+  router.get("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), userController.getUserById.bind(userController));
   router.post("/become-seller/:id", isSignedInMiddleware(), authorisationMiddleware([Role.User]), userController.becomeSeller.bind(userController));
   router.put("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), uploadUserConfig, userController.updateUser.bind(userController));
   router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), userController.deleteUser.bind(userController));

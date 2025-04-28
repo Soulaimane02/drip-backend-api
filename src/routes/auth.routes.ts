@@ -8,8 +8,8 @@ const authRoutes = () => {
   const router = express.Router();
   const authController = new AuthController();
 
-  router.post("/register", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), uploadUserConfig, authController.register.bind(authController));
-  router.post("/login", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), authController.login.bind(authController));
+  router.post("/register", uploadUserConfig, authController.register.bind(authController));
+  router.post("/login", authController.login.bind(authController));
   router.get("/me", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), authController.decodeToken.bind(authController));
 
   return router;

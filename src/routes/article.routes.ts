@@ -9,10 +9,10 @@ const articleRoutes = () => {
   const router = express.Router();
   const articleController = new ArticleController();
 
-  router.get("/", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), articleController.getAllArticles.bind(articleController));
+  router.get("/", articleController.getAllArticles.bind(articleController));
   router.get("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), articleController.getArticleById.bind(articleController));
-  router.get("/category/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), articleController.getArticlesByCategory.bind(articleController));
-  router.get("/categories/trees/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), articleController.getCategoryTreesOfArticle.bind(articleController));
+  router.get("/category/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), articleController.getArticlesByCategory.bind(articleController));
+  router.get("/categories/trees/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), articleController.getCategoryTreesOfArticle.bind(articleController));
   router.post("/", isSignedInMiddleware(), authorisationMiddleware([Role.Seller]), uploadArticleConfig, articleController.addArticle.bind(articleController));
   router.put("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller]), authorizeArticleAccessMiddleware(), uploadArticleConfig, articleController.updateArticle.bind(articleController));
   router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller]), authorizeArticleAccessMiddleware(), articleController.deleteArticle.bind(articleController));

@@ -7,9 +7,9 @@ const categoryRoutes = () => {
   const router = express.Router();
   const categoryController = new CategoryController();
 
-  router.get("/", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), categoryController.getAllCategories.bind(categoryController));
-  router.get("/children/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), categoryController.getChildrenCategories.bind(categoryController));
-  router.get("/tree/:id", authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), categoryController.getCategoryTree.bind(categoryController));
+  router.get("/", categoryController.getAllCategories.bind(categoryController));
+  router.get("/children/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), categoryController.getChildrenCategories.bind(categoryController));
+  router.get("/tree/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), categoryController.getCategoryTree.bind(categoryController));
   router.post("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin]), categoryController.addCategory.bind(categoryController));
   router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin]), categoryController.deleteCategory.bind(categoryController));
 

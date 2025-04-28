@@ -9,7 +9,7 @@ export const middleware = (app: express.Application) => {
   });
 };
 
-export const isSignedInMiddleware = () =>{
+export const isSignedInMiddleware = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.headers.authorization?.split(' ')[1];
@@ -30,16 +30,20 @@ export const isSignedInMiddleware = () =>{
   };
 };
 
-
 export const authorisationMiddleware = (roles: Role[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization?.split(' ')[1];
-    const user = await getUserByToken(token as string);
-    
-    if(!roles.includes(user.role)) {
-      return res.status(401).json({ error: "Insufficient permissions" });
-    }
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const user = await getUserByToken(token as string);
 
-    next();
+      if(!roles.includes(user.role)) {
+        return res.status(401).json({ error: "Insufficient permissions" });
+      }
+
+      next();
+    }
+    catch(err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
   };
 };

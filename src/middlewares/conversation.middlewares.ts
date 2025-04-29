@@ -24,6 +24,25 @@ export const verifyConversationOwnershipMiddleware = () => {
   };
 };
 
+export const verifyConversationOwnershipByUserIdMiddleware = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const user = await getUserByToken(token as string);
+      const userId = req.params.id;
+
+      if(userId !== user.id) {
+        return res.status(403).json({ error: "You do not have permission to access conversations of this user" });
+      }
+
+      next();
+    }
+    catch(err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+};
+
 export const verifyConversationOwnershipFromBodyMiddleware = () => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {

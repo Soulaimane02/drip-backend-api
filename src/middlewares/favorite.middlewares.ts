@@ -64,3 +64,22 @@ export const verifyFavoriteOwnershipByArticleIdMiddleware = () => {
     }
   };
 };
+
+export const verifyFavoriteOwnershipByUserIdMiddleware = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const user = await getUserByToken(token as string);
+      const userId = req.params.id;
+
+      if(userId !== user.id) {
+        return res.status(403).json({ error: "You do not have permission to get favorites for this user" });
+      }
+
+      next();
+    }
+    catch(err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+};

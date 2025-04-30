@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/database";
-import { middleware } from "./config/middlewares";
+import { middleware } from "./middlewares/base.middlewares";
 import { errorMiddleware } from "./middlewares/error.middlewares";
 import uploadsRoutes from "./routes/uploads.routes";
 import authRoutes from "./routes/auth.routes";

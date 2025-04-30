@@ -85,3 +85,28 @@ export const verifyMessageSenderOwnershipMiddleware = () => {
     }
   };
 };
+
+export const verifyMessageRespondOfferOwnershipMiddleware = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const user = await getUserByToken(token as string);
+      const messageId = req.params.id;
+      const message = await messageRepository.get(messageId);
+      const conversationId = message.conversationId;
+      const conversation = await conversationRepository.get(conversationId);
+
+      if(conversation.firstUserId !== user.id && conversation.secondUserId !== user.id) {
+        return res.status(403).json({ error: "You do not have permission to respond to this offer" });
+      }
+      if(message.userId === user.id) {
+        return res.status(403).json({ error: "You cannot respond to your own offer" });
+      }
+
+      next();
+    }
+    catch(err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+}

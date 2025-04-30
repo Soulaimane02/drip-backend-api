@@ -6,6 +6,7 @@ import UserRequestDTO from "../models/entities/user/dto/user.request.dto";
 import UserResponseDTO from "../models/entities/user/dto/user.response.dto";
 import Role from "../models/enums/role";
 import UserMapper from "../mappers/user.mapper";
+import TokenPayload from "../config/payload";
 
 dotenv.config();
 
@@ -70,7 +71,7 @@ class AuthService {
 
   async decodeToken(token: string): Promise<UserResponseDTO> {
     try {
-      const decoded = jwt.verify(token, SECRET_KEY) as { id: string };
+      const decoded = jwt.verify(token, SECRET_KEY) as TokenPayload;
       return await this.userRepository.get(decoded.id);
     }
     catch {

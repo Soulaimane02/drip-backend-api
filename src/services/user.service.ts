@@ -88,6 +88,7 @@ class UserService {
       user.role = Role.Seller;
       user.stripeId = account.id;
       user.stripeBankAccountId = externalAccount.id;
+      
       const updatedUser = await this.userRepository.put(id, user);
       return this.userMapper.toResponseDTO(updatedUser);
     }

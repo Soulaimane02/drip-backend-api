@@ -65,3 +65,27 @@ export const verifyPaymentOwnershipByArticleIdMiddleware = () => {
     }
   };
 };
+
+export const verifyPaymentPayOwnershipMiddleware = () => {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1];
+      const user = await getUserByToken(token as string);
+      const userId = req.body.userId;
+      const articleId = req.body.articleId;
+      const article = await articleRepository.get(articleId);
+
+      if(userId !== user.id) {
+        return res.status(403).json({ error: "You do not have permission to pay" });
+      }
+      if(article.userId === user.id) {
+        return res.status(403).json({ error: "You cannot pay for your own article" });
+      }
+
+      next();
+    }
+    catch(err) {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  };
+};

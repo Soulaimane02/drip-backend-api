@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { getUserByToken } from "../utils/token";
 import ReviewRepository from "../repositories/review.repository";
+import Role from "../models/enums/role";
 
 const reviewRepository = new ReviewRepository();
 
@@ -31,7 +32,7 @@ export const verifyReviewOwnershipByIdMiddleware = () => {
       const reviewId = req.params.id;
       const review = await reviewRepository.get(reviewId);
 
-      if(review.userId !== user.id) {
+      if(user.role !== Role.Admin && review.userId !== user.id) {
         return res.status(403).json({ error: "You do not have permission in this review" });
       }
 

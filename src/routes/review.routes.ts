@@ -2,7 +2,7 @@ import express from "express";
 import ReviewController from "../controllers/review.controller";
 import { authorisationMiddleware, isSignedInMiddleware } from "../middlewares/base.middlewares";
 import Role from "../models/enums/role";
-import { verifyReviewOwnershipFromBodyMiddleware } from "../middlewares/review.middlewares";
+import { verifyReviewOwnershipByIdMiddleware, verifyReviewOwnershipFromBodyMiddleware } from "../middlewares/review.middlewares";
 
 const reviewRoutes = () => {
   const router = express.Router();
@@ -13,8 +13,8 @@ const reviewRoutes = () => {
   router.get("/user/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.getReviewsByUserId.bind(reviewController));
   router.get("/article/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.getReviewsByArticleId.bind(reviewController));
   router.post("/", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), verifyReviewOwnershipFromBodyMiddleware(), reviewController.addReview.bind(reviewController));
-  router.put("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.updateReview.bind(reviewController));
-  router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), reviewController.deleteReview.bind(reviewController));
+  router.put("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), verifyReviewOwnershipByIdMiddleware(), reviewController.updateReview.bind(reviewController));
+  router.delete("/:id", isSignedInMiddleware(), authorisationMiddleware([Role.Admin, Role.Seller, Role.User]), verifyReviewOwnershipByIdMiddleware(), reviewController.deleteReview.bind(reviewController));
 
   return router;
 }

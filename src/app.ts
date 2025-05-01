@@ -30,6 +30,10 @@ app.use(cors({
 middleware(app);
 connectDB();
 
+app.get("/test", (req, res) => {
+  res.send("Hello World");
+});
+
 app.use("/uploads", uploadsRoutes());
 app.use("/auth", authRoutes());
 app.use("/users", userRoutes());

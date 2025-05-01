@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_PASSWORD }}
           script: |
-            cd /var/www/drip-backend
+            cd /opt/drip-backend
             git pull origin develop
             docker compose down
             docker compose up --build -d 

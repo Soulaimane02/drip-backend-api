@@ -4,7 +4,7 @@ services:
   app:
     build: .
     ports:
-      - "3002:3002"
+      - "3002:3000"
     environment:
       - NODE_ENV=development
       - MONGODB_DATABASE_PATH=mongodb://mongodb:27017/drip
@@ -21,7 +21,7 @@ services:
   mongodb:
     image: mongo:latest
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
       - mongodb_data:/data/db
 

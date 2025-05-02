@@ -24,13 +24,13 @@ jobs:
         run: npm run build
 
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
-          password: ${{ secrets.VPS_PASSWORD }}
+          key: ${{ secrets.VPS_KEY }}
           script: |
-            cd /var/www/drip-backend
+            cd /opt/drip-backend
             git pull origin develop
             docker compose down
-            docker compose up --build -d 
+            docker compose up --build -d

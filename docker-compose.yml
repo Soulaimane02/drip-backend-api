@@ -5,11 +5,8 @@ services:
     build: .
     ports:
       - "3002:3000"
-    environment:
-      - NODE_ENV=development
-      - MONGODB_DATABASE_PATH=mongodb://mongodb:27017/drip
-      - PORT=3002
-      - IP_ADRESS=http://localhost:3002
+    env_file:
+      - .env
     depends_on:
       - mongodb
     volumes:
@@ -26,4 +23,4 @@ services:
       - mongodb_data:/data/db
 
 volumes:
-  mongodb_data: 
+  mongodb_data:

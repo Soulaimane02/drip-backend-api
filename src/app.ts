@@ -31,7 +31,7 @@ middleware(app);
 connectDB();
 
 app.get("/test", (req, res) => {
-  res.send("Hello World");
+  res.send("Hello World !");
 });
 
 app.use("/uploads", uploadsRoutes());

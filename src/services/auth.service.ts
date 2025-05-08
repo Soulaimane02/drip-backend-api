@@ -46,7 +46,7 @@ class AuthService {
       role: userAdded.role
     },
     SECRET_KEY,
-    { expiresIn: "1h" });
+    { expiresIn: "72h" });
   }
 
   async login(email: string, password: string): Promise<string> {
@@ -66,7 +66,7 @@ class AuthService {
       role: user.role
     },
     SECRET_KEY, 
-    { expiresIn: "1h" });
+    { expiresIn: "72h" });
   }
 
   async decodeToken(token: string): Promise<UserResponseDTO> {

@@ -32,6 +32,9 @@ jobs:
           key: ${{ secrets.VPS_KEY }}
           script: |
             cd /opt/drip-backend-api
-            git pull origin develop
+            git fetch origin
+            git reset --hard origin/develop
+            git log -1
             docker compose down
-            docker compose up --build -d
+            docker compose build --no-cache
+            docker compose up -d

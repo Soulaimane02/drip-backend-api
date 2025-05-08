@@ -9,6 +9,8 @@ services:
       - .env
     depends_on:
       - mongodb
+    volumes:
+      - ./uploads:/app/dist/uploads
     command: npm run start:prod
 
   mongodb:

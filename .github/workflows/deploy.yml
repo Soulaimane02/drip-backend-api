@@ -38,4 +38,3 @@ jobs:
             docker compose down
             docker compose build --no-cache
             docker compose up -d
-            ls -la /opt/drip-backend-api | grep deploy.yml
